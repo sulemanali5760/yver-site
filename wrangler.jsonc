@@ -1,8 +1,17 @@
 {
-  // Static site on Cloudflare Workers: no server code, just the files in ./public
+  // Static site in ./public, plus one endpoint (POST /api/request) that stores requests in D1.
   "name": "yver-site",
+  "main": "src/worker.js",
   "compatibility_date": "2026-09-17",
   "assets": {
-    "directory": "./public"
-  }
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "yver-requests",
+      "database_id": "f4f9f02b-4381-4d45-b8a5-0108150ecd75"
+    }
+  ]
 }

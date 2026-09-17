@@ -171,6 +171,8 @@ dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
 .req-sum b{font:700 16px/1.2 var(--display)}
 .req .check{display:flex;gap:10px;align-items:flex-start;font:14px/1.5 var(--body);letter-spacing:0;text-transform:none;color:var(--soft)}
 .req .check input{width:auto;margin-top:4px;accent-color:var(--handle)}
+.trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.err{margin:0;color:#E08D7E;font-size:14px}
 .link{background:none;border:0;padding:0;color:var(--handle);text-decoration:underline;text-underline-offset:3px;font:inherit}
 .done-h{font:700 28px/1.1 var(--display);margin:6px 0 16px}
 .steps{margin:20px 0;padding-left:20px;display:grid;gap:12px;color:var(--soft)}
@@ -528,7 +530,9 @@ th{color:var(--muted);font-weight:500}
     <label for="reqContact">Preferred contact<select id="reqContact"><option>Email</option><option>Phone call</option><option>Through my representative</option></select></label>
     <label for="reqAbout">About you (optional)<textarea id="reqAbout" placeholder="What draws you to this chapter?"></textarea></label>
     <label class="check" for="reqConsent"><input type="checkbox" id="reqConsent" required><span>I agree that YVER stores these details to review my request. <button type="button" class="link" data-legal="privacy">Privacy policy</button></span></label>
-    <button class="btn" type="submit">Send request</button>
+    <label class="trap" aria-hidden="true">Company<input id="reqCompany" tabindex="-1" autocomplete="off"></label>
+    <p class="err" id="reqErr" hidden role="alert"></p>
+    <button class="btn" type="submit" id="reqSend">Send request</button>
   </form>
   <div id="reqDone" hidden aria-live="polite"></div>
 </dialog>
@@ -1213,11 +1217,36 @@ $("#pvInfo").addEventListener("click", e => {
   reqDlg.showModal();
 });
 reqDlg.addEventListener("click", e => { if (e.target.closest("[data-close-req]")) reqDlg.close(); });
-// ponytail: demo only — requests need a form backend (Shopify, Airtable, email) before launch
-$("#reqForm").onsubmit = e => {
+// sends to the Worker at /api/request; on a preview without that endpoint it falls back to a demo reference
+$("#reqForm").onsubmit = async e => {
   e.preventDefault();
   const p = PIECES.find(x => x.id === $("#reqPiece").value);
-  const ref = `YVER-${CHAPTERS[0].num}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+  const btn = $("#reqSend"), err = $("#reqErr");
+  btn.disabled = true; btn.textContent = "Sending…"; err.hidden = true;
+  let ref, demo = false;
+  try {
+    const r = await fetch("/api/request", {
+      method: "POST",
+      headers: {"content-type": "application/json"},
+      body: JSON.stringify({
+        piece: p.id, size: $("#reqSize").value, name: $("#reqName").value, email: $("#reqEmail").value,
+        city: $("#reqCity").value, contact: $("#reqContact").value, about: $("#reqAbout").value,
+        consent: $("#reqConsent").checked, company: $("#reqCompany").value,
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok) {                                     // the Worker explains what to fix
+      err.textContent = data.error || "Something went wrong.";
+      err.hidden = false;
+      btn.disabled = false; btn.textContent = "Send request";
+      return;
+    }
+    ref = data.ref;
+  } catch {
+    demo = true;
+    ref = `YVER-${CHAPTERS[0].num}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+  }
+  btn.disabled = false; btn.textContent = "Send request";
   $("#reqDone").innerHTML = `
     <h3 class="done-h">Thank you, ${esc($("#reqName").value)}.</h3>
     <dl class="spec">
@@ -1231,7 +1260,7 @@ $("#reqForm").onsubmit = e => {
       <li><b>Private link</b>If it's approved, you receive a private payment link.</li>
       <li><b>Delivery</b>Your piece arrives with its numbered certificate.</li>
     </ol>
-    <p class="note">Demo: this request was not sent anywhere. Connect a form backend before launch.</p>
+    ${demo ? `<p class="note">Preview only: this request was not sent. On the live site it reaches the YVER team.</p>` : ""}
     <button class="btn" type="button" data-close-req style="margin-top:16px">Close</button>`;
   $("#reqTitle").textContent = "Request received";
   $("#reqForm").hidden = true;
