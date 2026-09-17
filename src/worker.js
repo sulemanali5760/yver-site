@@ -1,4 +1,6 @@
-// Serves the static site, plus one endpoint: POST /api/request stores a piece request in D1.
+// Serves the static site, plus one endpoint: POST /api/request stores a piece request in D1
+// and emails the atelier. Email needs Cloudflare Email Routing with a verified destination.
+import { EmailMessage } from "cloudflare:email";
 const PIECES = {
   "sk-archive": "Skrei Archive Coat",
   "sk-hjell": "Hjell Parka",
@@ -13,7 +15,41 @@ const json = (data, status = 200) => new Response(JSON.stringify(data), {
 });
 const clean = (v, max) => typeof v === "string" ? v.trim().slice(0, max) : "";
 
-async function takeRequest(request, env) {
+// plain-text alert; no dependencies, Email Routing does the sending
+const CRLF = "\r\n";
+const ascii = s => (s || "").replace(/[^\x20-\x7E]/g, "?");   // mail headers must stay 7-bit
+async function notify(env, r) {
+  if (!env.NOTIFY) return;                            // binding missing (local preview): skip quietly
+  const from = env.ALERT_FROM || "atelier@rawajpret.store";
+  const to = env.ALERT_TO || "suleman.ali5760@gmail.com";
+  const body = [
+    `Piece    ${r.piece_name} (${r.piece_id})`,
+    `Size     ${r.size}`,
+    `Name     ${r.name}`,
+    `Email    ${r.email}`,
+    `City     ${r.city || "-"}`,
+    `Contact  ${r.contact || "-"}`,
+    `Country  ${r.country || "-"}`,
+    "",
+    r.about ? "About them:" + CRLF + r.about : "No note.",
+    "",
+    "Reply within 48 hours. Approve by sending a private payment link.",
+  ].join(CRLF);
+  const raw = [
+    `From: YVER <${from}>`,
+    `To: <${to}>`,
+    `Reply-To: ${ascii(r.name)} <${r.email}>`,
+    `Subject: Request ${r.ref} - ${ascii(r.piece_name)}`,
+    `Message-ID: <${r.ref}.${Date.now()}@rawajpret.store>`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/plain; charset="utf-8"',
+    "",
+    body,
+  ].join(CRLF);
+  await env.NOTIFY.send(new EmailMessage(from, to, raw));
+}
+
+async function takeRequest(request, env, ctx) {
   let body;
   try { body = await request.json(); } catch { return json({error: "Send JSON."}, 400); }
 
@@ -42,15 +78,21 @@ async function takeRequest(request, env) {
     request.headers.get("cf-ipcountry") || "", clean(request.headers.get("user-agent"), 200),
   ).run();
 
+  const row = {ref, piece_id: piece, piece_name: PIECES[piece], size, name, email,
+    city: clean(body.city, 80), contact: clean(body.contact, 40), about: clean(body.about, 2000),
+    country: request.headers.get("cf-ipcountry") || ""};
+  // the alert must never make the visitor's request fail
+  ctx.waitUntil(notify(env, row).catch(e => console.error("alert failed", e)));
+
   return json({ref});
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/request") {
       if (request.method !== "POST") return json({error: "Use POST."}, 405);
-      try { return await takeRequest(request, env); }
+      try { return await takeRequest(request, env, ctx); }
       catch (e) { return json({error: "Something went wrong. Please email us instead."}, 500); }
     }
     return env.ASSETS.fetch(request);

@@ -7,6 +7,17 @@
     "directory": "./public",
     "binding": "ASSETS"
   },
+  // alert mail: Email Routing must be on, and ALERT_TO verified as a destination address
+  "send_email": [
+    {
+      "name": "NOTIFY",
+      "destination_address": "suleman.ali5760@gmail.com"
+    }
+  ],
+  "vars": {
+    "ALERT_FROM": "atelier@rawajpret.store",
+    "ALERT_TO": "suleman.ali5760@gmail.com"
+  },
   "d1_databases": [
     {
       "binding": "DB",
