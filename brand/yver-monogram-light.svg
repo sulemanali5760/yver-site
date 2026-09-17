@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <title>YVER monogram</title>
+  <circle cx="60" cy="60" r="55" fill="none" stroke="#120D0A" stroke-width="1.2"/>
+  <ellipse cx="60" cy="60" rx="55" ry="18" fill="none" stroke="#120D0A" stroke-opacity=".25"/>
+  <path d="M60 1 V9" stroke="#F08A3C" stroke-width="1.6"/>
+  <g fill="none" stroke="#120D0A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5.5 3.6">
+    <path d="M40 28 L60 60"/>
+    <path d="M80 28 L60 60"/>
+    <path d="M60 60 V92"/>
+  </g>
+  <circle cx="60" cy="92" r="3.4" fill="#F08A3C"/>
+</svg>

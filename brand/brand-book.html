@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Brand book for YVER: name, trademark screening, logo, colour, type, label, photo brief and voice.">
+<meta property="og:title" content="YVER — Chapters of the World">
+<meta property="og:description" content="Brand book for YVER: name, trademark screening, logo, colour, type, label, photo brief and voice.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rawajpret.store/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23120D0A'/%3E%3Cg fill='none' stroke='%23F1E6D6' stroke-width='7' stroke-linecap='round' stroke-dasharray='11 7'%3E%3Cpath d='M40 28 L60 60'/%3E%3Cpath d='M80 28 L60 60'/%3E%3Cpath d='M60 60 V92'/%3E%3C/g%3E%3Ccircle cx='60' cy='92' r='6' fill='%23F08A3C'/%3E%3C/svg%3E">
+  <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>YVER Brand Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+</head>
+<body>
+<style>
+/* One committed look, matching the website: warm workshop dark. Light specimens sit on a paper panel. */
+:root{
+  --ground:#120D0A; --panel:#1B1511; --cream:#F1E6D6; --soft:#D9CFC1; --muted:#8C8074; --dim:#4A3F36;
+  --mat:#46553A; --handle:#F08A3C; --paper:#EFE7DA; --ink:#120D0A;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --g:clamp(16px,4vw,56px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--cream);font:16px/1.6 var(--body);padding-inline:var(--g)}
+.wrap{max-width:1180px;margin-inline:auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px;padding-block:56px 96px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:24px}.toc{position:static!important}}
+.toc{position:sticky;top:calc(24px + env(safe-area-inset-top,0px));align-self:start;display:grid;gap:6px;font-size:13px}
+.toc a{color:var(--muted);text-decoration:none;display:flex;gap:10px}
+.toc a:hover{color:var(--cream)}
+.toc b{font:500 12px var(--mono);color:var(--handle);min-width:2ch}
+.cap{font:500 12px/1.5 var(--body);letter-spacing:.14em;text-transform:uppercase}
+.muted{color:var(--muted)}
+.mono{font:500 13px var(--mono)}
+a{color:var(--handle)}
+:focus-visible{outline:2px dashed var(--handle);outline-offset:3px}
+h1{font:500 clamp(48px,7vw,96px)/.95 var(--serif);letter-spacing:.02em;margin:12px 0 18px}
+h2{font:500 clamp(34px,4.4vw,52px)/1 var(--serif);margin:0 0 6px;display:flex;gap:16px;align-items:baseline}
+h2 small{font:500 14px var(--mono);color:var(--handle)}
+h3{font:700 13px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:36px 0 12px}
+p,li{max-width:66ch}
+section{padding-block:56px;border-top:1px solid var(--dim)}
+.lede{font:italic 400 clamp(22px,2.4vw,28px)/1.35 var(--serif);color:var(--soft);max-width:44ch}
+.todo{background:rgb(240 138 60/.16);color:var(--handle);border-radius:4px;padding:1px 6px;font:500 13px var(--mono)}
+.note{border-left:2px solid var(--handle);padding-left:14px;color:var(--soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.tile{border-radius:14px;padding:28px;display:grid;place-items:center;min-height:220px;position:relative}
+.tile .cap{position:absolute;left:16px;bottom:12px}
+.tile.dark{background:var(--panel)}
+.tile.paper{background:var(--paper);color:var(--ink)}
+.tile.paper .cap{color:#6B6258}
+.tile.mat{background:var(--mat)}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--dim);vertical-align:top}
+th{font:500 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+td.mono{white-space:nowrap}
+.ok{color:#9FD8B0}.no{color:#E08D7E}.warn{color:var(--handle)}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.sw{border-radius:12px;overflow:hidden;background:var(--panel)}
+.sw i{display:block;height:84px}
+.sw div{padding:10px 12px;display:grid;gap:2px;font-size:13px}
+.type-row{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;padding-block:18px;border-bottom:1px solid var(--dim);align-items:baseline}
+@media (max-width:600px){.type-row{grid-template-columns:1fr;gap:6px}}
+.dodont{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.dodont div{background:var(--panel);border-radius:12px;padding:16px 18px}
+.dodont b{display:block;font:500 11px var(--body);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+
+/* woven label */
+.label{width:min(360px,100%);aspect-ratio:70/30;border-radius:3px;position:relative;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;padding:14px 22px;color:#E9DFCF;
+  background:repeating-linear-gradient(90deg,rgb(255 255 255/.035) 0 1px,transparent 1px 3px),repeating-linear-gradient(0deg,rgb(0 0 0/.25) 0 1px,transparent 1px 2px),#17110D;
+  box-shadow:0 10px 30px rgb(0 0 0/.5),inset 0 0 0 1px rgb(255 255 255/.06)}
+.label::before,.label::after{content:"";position:absolute;top:0;bottom:0;width:10px;background:#0E0A08}
+.label::before{left:0;border-right:1px dashed rgb(233 223 207/.25)}
+.label::after{right:0;border-left:1px dashed rgb(233 223 207/.25)}
+.label svg{width:52px}
+.label .t{display:grid;gap:3px}
+.label .w{font:500 26px/1 var(--serif);letter-spacing:.3em}
+.label .s{font:500 8.5px var(--mono);letter-spacing:.12em;opacity:.8}
+.cert{background:var(--paper);color:var(--ink);border-radius:6px;padding:28px;width:min(440px,100%);display:grid;gap:14px;box-shadow:0 10px 30px rgb(0 0 0/.4)}
+.cert .head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #CFC4B4;padding-bottom:12px}
+.cert dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:13px}
+.cert dt{font:500 10px var(--body);letter-spacing:.14em;text-transform:uppercase;color:#6B6258}
+.cert dd{margin:0;font:500 13px var(--mono)}
+.cert .sig{display:flex;justify-content:space-between;gap:16px;font:500 10px var(--body);letter-spacing:.14em;text-transform:uppercase;color:#6B6258}
+.cert .sig span{flex:1;border-top:1px solid #9C9183;padding-top:6px}
+.cert .todo{background:#F5D9C0;color:#9A4A12}
+
+/* photo alignment template */
+.frame{background:var(--mat);border-radius:14px;padding:20px;display:grid;place-items:center}
+.frame svg{width:min(320px,100%)}
+ol.shots{padding-left:22px;display:grid;gap:10px}
+ol.shots li b{color:var(--cream)}
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <span class="cap muted" style="margin-bottom:8px">YVER Brand Book</span>
+    <a href="#name"><b>1</b>Name &amp; trademark</a>
+    <a href="#logo"><b>2</b>Logo</a>
+    <a href="#colour"><b>3</b>Colour</a>
+    <a href="#type"><b>4</b>Type</a>
+    <a href="#label"><b>5</b>Label &amp; certificate</a>
+    <a href="#photo"><b>6</b>Photo &amp; film brief</a>
+    <a href="#voice"><b>7</b>Voice</a>
+  </nav>
+
+  <main>
+    <header>
+      <span class="cap muted">Version 0.1 · 17 September 2026 · Draft</span>
+      <h1>YVER<br><em style="font-weight:400">Chapters of the World</em></h1>
+      <p class="lede">Outerwear told in chapters. Each one begins with a real place and the craft people built there to live with cold.</p>
+      <p class="muted">For the team, the atelier and anyone photographing or filming for YVER. Section numbers are for reference: "see 6.3" means the Skrei shot list.</p>
+    </header>
+
+    <section id="name">
+      <h2><small>1</small>Name, trademark &amp; domain</h2>
+      <p><strong>YVER</strong> is the medieval French spelling of <em>hiver</em>, winter. It survives in Charles d'Orléans' 15th-century poem <em>"Yver, vous n'estes qu'un villain"</em> — "Winter, you are nothing but a villain". Four letters, one season, and a line under it: <strong>Chapters of the World</strong>.</p>
+      <p class="muted">Say it the French way, "ee-VAIR". Because English speakers may hesitate, spell it out in the first frame of any film and in the first line of a press note.</p>
+
+      <h3>1.1 Trademark screening · TMview (EUIPO, DPMA, USPTO, UKIPO, WIPO and others) · 17 Sep 2026</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Finding</th><th>Detail</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>YVER in clothing (class 25) and bags (18)</td><td>No registration anywhere for the exact word.</td><td class="ok">Open</td></tr>
+          <tr><td>YVER in other trades</td><td>Software (India, China), services (Benelux), food (France). None of these block clothing.</td><td class="ok">No conflict</td></tr>
+          <tr><td>Similar marks in clothing</td><td>QYVER filed in Germany (Feb 2026), SYVER registered in China, gyver in India, Syver filed in Benelux for bags.</td><td class="warn">Ask the lawyer</td></tr>
+          <tr><td><strong>Yves Saint Laurent</strong></td><td>YVER is one letter from YVES, in the same industry, and YSL enforces its name aggressively. This is the main risk of the name.</td><td class="warn">Get an opinion before filing</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Names that failed this screening: KALT, VARDE, ISOTHERM, SEAMARK, ORBE, FIRN, ESKER, SKERRY, TRAME, NOSTOS, NORNE, MITOS, FILAVIA, TRAMONDO, PORTOLANO, OSTRO, TRAMONTANA, ORLO, BRUMA, ISKA — each already registered for clothing or bags somewhere. Still clear if YVER has to be dropped: <strong>PERIPLO</strong> and <strong>ISOLARIO</strong>.</p>
+      <p class="note">TMview is a search tool, not the official register, and a screening is not clearance. Before filing, have a trademark lawyer run a full search including the YSL question, then file at the EU register (EUIPO) for classes 25 and 18 and extend to the US and UK through the international (Madrid) system.</p>
+
+      <h3>1.2 Domain check · Namecheap · 17 Sep 2026</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Domain</th><th>Status</th><th>Price shown</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">yver.fashion</td><td class="ok">Available</td><td class="mono">€29.45/yr</td><td>Main address.</td></tr>
+          <tr><td class="mono">maisonyver.com</td><td class="ok">Available</td><td class="mono">≈ €10/yr</td><td>Redirect to the main address.</td></tr>
+          <tr><td class="mono">yver.studio</td><td class="ok">Available</td><td class="mono">€12.98 first year</td><td>Optional, for the atelier.</td></tr>
+          <tr><td class="mono">wearyver.com</td><td class="ok">Available</td><td class="mono">≈ €10/yr</td><td>Optional, protects the name.</td></tr>
+          <tr><td class="mono">yver.com</td><td class="warn">Premium resale</td><td class="mono">€13,000</td><td>Only worth it later.</td></tr>
+          <tr><td class="mono">yver.co · yver.de</td><td class="no">Taken</td><td class="mono">—</td><td></td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted">Instagram: @yver shows "profile isn't available", which usually means free but can also mean deactivated. Fallback handle: @yver.studio.</p>
+      <p class="note">Nothing is reserved yet. Availability changes daily: register the domains the day you decide.</p>
+    </section>
+
+    <section id="logo">
+      <h2><small>2</small>Logo</h2>
+      <p>A spaced serif wordmark in the tradition of tailoring houses, and a monogram: a chain-stitched Y inside a globe. The orange knot marks where the thread ends. The orange tick at the top points north.</p>
+      <h3>2.1 Wordmark and monogram</h3>
+      <div class="grid">
+        <div class="tile dark">
+          <svg viewBox="0 0 440 120" width="100%" role="img" aria-label="YVER wordmark on dark"><text x="233" y="64" text-anchor="middle" fill="#F1E6D6" font-family="'Cormorant Garamond', Georgia, serif" font-weight="500" font-size="64" letter-spacing="26">YVER</text><line x1="150" y1="82" x2="290" y2="82" stroke="#F1E6D6" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><text x="222" y="106" text-anchor="middle" fill="#F1E6D6" font-family="Manrope, Helvetica, sans-serif" font-weight="500" font-size="11" letter-spacing="4.4">CHAPTERS OF THE WORLD</text></svg>
+          <span class="cap muted">Wordmark · on dark</span>
+        </div>
+        <div class="tile paper">
+          <svg viewBox="0 0 440 120" width="100%" role="img" aria-label="YVER wordmark on light"><text x="233" y="64" text-anchor="middle" fill="#120D0A" font-family="'Cormorant Garamond', Georgia, serif" font-weight="500" font-size="64" letter-spacing="26">YVER</text><line x1="150" y1="82" x2="290" y2="82" stroke="#120D0A" stroke-width="1.4" stroke-dasharray="4 3" stroke-linecap="round"/><text x="222" y="106" text-anchor="middle" fill="#120D0A" font-family="Manrope, Helvetica, sans-serif" font-weight="500" font-size="11" letter-spacing="4.4">CHAPTERS OF THE WORLD</text></svg>
+          <span class="cap">Wordmark · on paper</span>
+        </div>
+        <div class="tile dark"><svg class="mono-mark" viewBox="0 0 120 120" width="120" role="img" aria-label="YVER monogram on dark"></svg><span class="cap muted">Monogram · on dark</span></div>
+        <div class="tile paper"><svg class="mono-mark ink" viewBox="0 0 120 120" width="120" role="img" aria-label="YVER monogram on light"></svg><span class="cap">Monogram · on paper</span></div>
+        <div class="tile mat"><svg class="mono-mark" viewBox="0 0 120 120" width="120" role="img" aria-label="YVER monogram on olive"></svg><span class="cap">Monogram · on olive</span></div>
+      </div>
+      <h3>2.2 Rules</h3>
+      <div class="dodont">
+        <div><b>Clear space</b>Keep empty space around the logo equal to the height of the letter Y.</div>
+        <div><b>Minimum size</b>Wordmark 24 mm / 120 px wide. Monogram 8 mm / 24 px. Below that, drop "Chapters of the World".</div>
+        <div><b>Colours</b>Cream on dark, ink on paper. Orange only for the knot and the north tick.</div>
+        <div><b class="no">Don't</b>Stretch it, add shadows or gradients, change the letter spacing, or set it in another typeface.</div>
+      </div>
+      <p class="note">Files are in <span class="mono">kalt-studio/brand/</span>: wordmark and monogram, each on dark and light. The wordmark uses live fonts. Convert the text to outlines before print or embroidery, and have a designer refine the letter spacing by hand.</p>
+    </section>
+
+    <section id="colour">
+      <h2><small>3</small>Colour</h2>
+      <p>Taken from a winter workshop: dark wood, raw cotton, a cutting mat, and one orange thread.</p>
+      <div class="swatches">
+        <div class="sw"><i style="background:#120D0A;box-shadow:inset 0 0 0 1px #4A3F36"></i><div><b>Workshop</b><span class="mono muted">#120D0A</span><span class="muted">Page ground</span></div></div>
+        <div class="sw"><i style="background:#1B1511"></i><div><b>Oak</b><span class="mono muted">#1B1511</span><span class="muted">Panels, cards</span></div></div>
+        <div class="sw"><i style="background:#F1E6D6"></i><div><b>Raw cotton</b><span class="mono muted">#F1E6D6</span><span class="muted">Text, logo</span></div></div>
+        <div class="sw"><i style="background:#8C8074"></i><div><b>Ash</b><span class="mono muted">#8C8074</span><span class="muted">Secondary text</span></div></div>
+        <div class="sw"><i style="background:#46553A"></i><div><b>Cutting mat</b><span class="mono muted">#46553A</span><span class="muted">Product stages</span></div></div>
+        <div class="sw"><i style="background:#F08A3C"></i><div><b>Thread</b><span class="mono muted">#F08A3C</span><span class="muted">One accent per view</span></div></div>
+        <div class="sw"><i style="background:#EFE7DA"></i><div><b>Paper</b><span class="mono muted">#EFE7DA</span><span class="muted">Certificates, print</span></div></div>
+      </div>
+      <p class="muted">Each chapter may add one colour of its own (Skrei: stockfish gold <span class="mono">#E8C38A</span>). Use it only in that chapter's art.</p>
+    </section>
+
+    <section id="type">
+      <h2><small>4</small>Type</h2>
+      <div class="type-row"><span class="cap muted">Wordmark &amp; quotes<br>Cormorant Garamond</span><span style="font:500 40px/1.1 var(--serif)">Dried by the wind</span></div>
+      <div class="type-row"><span class="cap muted">Headlines on the site<br>Unbounded</span><span style="font:700 30px/1.1 Unbounded, 'Arial Black', sans-serif">Six places. Six crafts.</span></div>
+      <div class="type-row"><span class="cap muted">Body<br>Manrope</span><span>Much of the catch is tied in pairs and hung on tall wooden racks called hjell.</span></div>
+      <div class="type-row"><span class="cap muted">Data &amp; coordinates<br>JetBrains Mono</span><span class="mono" style="font-size:18px">68°12′N 13°36′E · Edition 7 of 12</span></div>
+      <p class="note">When the site moves to its own domain, host these fonts on your own server. Loading them from Google's servers has led to GDPR fines in Germany (LG München, 2022).</p>
+    </section>
+
+    <section id="label">
+      <h2><small>5</small>Label &amp; certificate</h2>
+      <h3>5.1 Woven neck label · 70 × 30 mm · folded ends</h3>
+      <div class="label" role="img" aria-label="Woven label mock-up">
+        <svg class="mono-mark label-mark" viewBox="0 0 120 120"></svg>
+        <div class="t">
+          <span class="w">YVER</span>
+          <span class="s">CHAPTER I · SKREI · 68°12′N 13°36′E</span>
+          <span class="s">No. 07 / 12 · MADE BY [ATELIER]</span>
+        </div>
+      </div>
+      <p class="muted">Black damask weave, cream thread. The piece number is woven separately, or embroidered, per edition. Archive pieces read "No. 1 / 1".</p>
+      <h3>5.2 Certificate · A5, paper stock</h3>
+      <div class="cert">
+        <div class="head"><span style="font:500 22px var(--serif);letter-spacing:.3em">YVER</span><span class="cap" style="color:#6B6258">Certificate of provenance</span></div>
+        <dl>
+          <dt>Certificate</dt><dd>YVER-I-0007</dd>
+          <dt>Piece</dt><dd>Northern Route Bomber</dd>
+          <dt>Chapter</dt><dd>I · Skrei · Lofoten, Norway</dd>
+          <dt>Edition</dt><dd>7 of 12</dd>
+          <dt>Made by</dt><dd><span class="todo">[atelier, city]</span></dd>
+          <dt>Embroidery</dt><dd><span class="todo">[studio, city]</span> · 41,000 stitches</dd>
+          <dt>Issued</dt><dd><span class="todo">[date]</span></dd>
+        </dl>
+        <div class="sig"><span>Maker</span><span>YVER</span></div>
+        <span class="cap" style="color:#6B6258">Scan the tag in the lining to open this piece's page</span>
+      </div>
+      <p class="note">Planned: an NFC tag sewn into the lining that opens the piece page. It also prepares the brand for the EU's digital product passports for textiles.</p>
+    </section>
+
+    <section id="photo">
+      <h2><small>6</small>Photo &amp; film brief</h2>
+      <p class="lede">We photograph two things: the pieces, exactly and consistently, and the places, honestly.</p>
+
+      <h3>6.1 Deliverables per chapter</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>What</th><th>How many</th><th>Where it's used</th></tr></thead>
+        <tbody>
+          <tr><td>Product, ghost mannequin: front, back, side</td><td>3 per piece</td><td>Piece page, "On form" view, request panel</td></tr>
+          <tr><td>Product, flat lay, front</td><td>1 per piece</td><td>Piece page, "Flat" view, chapter grid</td></tr>
+          <tr><td>Detail macros: embroidery, fabric, label</td><td>3 per piece</td><td>Piece page gallery</td></tr>
+          <tr><td>Editorial on people, on location</td><td>8–12</td><td>Chapter page, home page</td></tr>
+          <tr><td>Place stills, no people</td><td>10–15</td><td>Chapter scenes, Atlas preview cards</td></tr>
+          <tr><td>Film loops, 8–12 s, no cuts</td><td>4–6</td><td>Chapter backgrounds, one per part (I–V)</td></tr>
+          <tr><td>Ambient sound, 60 s</td><td>2–3</td><td>Optional chapter sound, off by default</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>6.2 Product shots must line up with the site</h3>
+      <div class="grid" style="align-items:start">
+        <div class="frame"><svg id="tpl" viewBox="-10 -10 220 240" role="img" aria-label="Alignment template: jacket outline inside the 200 by 220 frame"></svg></div>
+        <ul>
+          <li>Front view, camera at chest height, lens straight on. No angle.</li>
+          <li>Collar top at <span class="mono">7%</span> of the frame height, shoulder seams at <span class="mono">12%</span>, centre line exactly in the middle.</li>
+          <li>Frame ratio <span class="mono">10:11</span> (e.g. <span class="mono">3000 × 3300 px</span>). Sleeves hang straight and reach the side edges.</li>
+          <li>Shoot on a neutral grey backdrop and deliver a cut-out PNG with a transparent background as well.</li>
+          <li>Colour: grey card in the first frame of every setup. Same light for every piece in a chapter.</li>
+        </ul>
+      </div>
+
+      <h3>6.3 Shot list · Chapter I, Skrei (Lofoten)</h3>
+      <ol class="shots">
+        <li><b>Stockfish racks against the mountains.</b> Wide shot at blue hour, racks full, no people.</li>
+        <li><b>Rack detail.</b> Rows of drying fish, frost if possible. Macro and medium.</li>
+        <li><b>Harbour at first light.</b> Boats coming in during the skrei season.</li>
+        <li><b>Red rorbuer on stilts.</b> Reine or Hamnøy, from the water side.</li>
+        <li><b>Hands at work.</b> Real fishery or processing workers, only with their consent and credit.</li>
+        <li><b>Hjell Parka on a person</b> walking past the racks. Full length, then medium.</li>
+        <li><b>Northern Route Bomber</b> at the harbour edge. The gold route line must read clearly.</li>
+        <li><b>Rorbu Chore Coat</b> against a red cabin wall. Colours must match, not clash.</li>
+        <li><b>Archive Coat</b> alone on the ghost form, on location, at dusk.</li>
+        <li><b>Aurora</b>, only if it happens. Never composite a fake sky.</li>
+        <li><b>Film loops:</b> sea swell, drying fish swaying, snow on a rack, a needle through wool (in the atelier).</li>
+        <li><b>Sound:</b> harbour wind, gulls, a boat engine at a distance.</li>
+      </ol>
+
+      <h3>6.4 Look and light</h3>
+      <div class="dodont">
+        <div><b class="ok">Do</b>Low winter light, blue hour, real weather. Show fabric texture as it is. Leave space for text on the left or right of wide shots.</div>
+        <div><b class="no">Don't</b>Heavy retouching of fabric, fake snow, composited skies, or staged "locals" as props.</div>
+        <div><b>Best time</b>February to March: the skrei season, racks full, and a few hours of low daylight each day.</div>
+        <div><b>People</b>Real residents only with a signed model release, a fee and a credit. Say who they are; don't dress them up as a story.</div>
+      </div>
+
+      <h3>6.5 Permissions and rights</h3>
+      <ul>
+        <li>Model releases for every recognisable person. Property releases for cabins and fish companies, since the racks are private property. Don't touch the fish: it's food.</li>
+        <li>Drones: check the rules of the Norwegian Civil Aviation Authority (Luftfartstilsynet) before flying.</li>
+        <li>Usage rights: website, social media and print for at least <span class="todo">[x years]</span>, worldwide. Agree on a fee for paid advertising separately.</li>
+        <li>Credit the photographer on the chapter page.</li>
+      </ul>
+
+      <h3>6.6 Files and naming</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Type</th><th>Format</th><th>Name</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td class="mono">TIFF + JPG 3000×3300, PNG cut-out</td><td class="mono">YVER_I_sk-hjell_front_01.jpg</td></tr>
+          <tr><td>Editorial / place</td><td class="mono">RAW + JPG, long edge 6000 px</td><td class="mono">YVER_I_place_racks_03.jpg</td></tr>
+          <tr><td>Film</td><td class="mono">4K, 25 fps, ProRes + H.265 web</td><td class="mono">YVER_I_loop_swell_01.mp4</td></tr>
+          <tr><td>Sound</td><td class="mono">WAV 48 kHz</td><td class="mono">YVER_I_sound_harbour_01.wav</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>6.7 Before the shoot</h3>
+      <ul>
+        <li>Budget: <span class="todo">[amount]</span> · Dates: <span class="todo">[Feb–Mar window]</span> · Photographer: <span class="todo">[name]</span></li>
+        <li>Samples of all six Skrei pieces ready 4 weeks before.</li>
+        <li>Local fixer in Lofoten to arrange permissions and releases.</li>
+      </ul>
+    </section>
+
+    <section id="voice">
+      <h2><small>7</small>Voice</h2>
+      <p>Write like a well-travelled friend who checked their facts: calm, specific, never grand.</p>
+      <div class="dodont">
+        <div><b class="ok">Do</b>Name places and crafts precisely, and explain local words once ("hjell, the drying racks").</div>
+        <div><b class="ok">Do</b>Say "inspired by" unless the piece was made there, by the people named.</div>
+        <div><b class="ok">Do</b>Credit every maker and source by name.</div>
+        <div><b class="no">Avoid</b>"exotic", "tribal", "primitive", "ethnic", "timeless", and "authentic" without proof.</div>
+      </div>
+      <h3>7.1 Example</h3>
+      <div class="dodont">
+        <div><b class="no">Not this</b>"Ancient Nordic fishermen's secrets, woven into a timeless masterpiece."</div>
+        <div><b class="ok">This</b>"The grid of Lofoten's drying racks, chain-stitched across a boiled-wool parka. Inspired by the cod fishery; made by [atelier]."</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// monogram: chain-stitched Y inside a globe ring; orange knot and north tick
+const MARK = c => `<circle cx="60" cy="60" r="55" fill="none" stroke="${c}" stroke-width="1.2"/>
+  <ellipse cx="60" cy="60" rx="55" ry="18" fill="none" stroke="${c}" stroke-opacity=".25"/>
+  <path d="M60 1 V9" stroke="#F08A3C" stroke-width="1.6"/>
+  <g fill="none" stroke="${c}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5.5 3.6">
+    <path d="M40 28 L60 60"/><path d="M80 28 L60 60"/><path d="M60 60 V92"/></g>
+  <circle cx="60" cy="92" r="3.4" fill="#F08A3C"/>`;
+document.querySelectorAll(".mono-mark").forEach(s => s.innerHTML = MARK(s.classList.contains("ink") ? "#120D0A" : s.classList.contains("label-mark") ? "#E9DFCF" : "#F1E6D6"));
+
+// alignment template: the website's jacket frame (200 × 220) with guide lines
+const coat = "M68 16 Q100 8 132 16 L152 26 Q178 38 186 70 L196 170 Q197 182 186 183 L168 184 L162 112 L162 214 Q100 220 38 214 L38 112 L32 184 L14 183 Q3 182 4 170 L14 70 Q22 38 48 26 Z";
+document.getElementById("tpl").innerHTML = `
+  <rect x="0" y="0" width="200" height="220" fill="none" stroke="#F1E6D6" stroke-width=".8"/>
+  <path d="${coat}" fill="rgb(241 230 214/.12)" stroke="#F1E6D6" stroke-width="1" stroke-dasharray="3 2"/>
+  <g stroke="#F08A3C" stroke-width=".8">
+    <line x1="-8" y1="16" x2="208" y2="16"/><line x1="-8" y1="26" x2="208" y2="26"/><line x1="100" y1="-8" x2="100" y2="228"/>
+  </g>
+  <g fill="#F08A3C" font-family="JetBrains Mono, monospace" font-size="7">
+    <text x="150" y="13">collar 7%</text><text x="150" y="35">shoulder 12%</text><text x="104" y="226">centre</text>
+  </g>`;
+</script>
+
+</body>
+</html>

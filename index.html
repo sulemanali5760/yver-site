@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Outerwear told in chapters: every jacket begins with a real place and the craft people built there to live with cold.">
+<meta property="og:title" content="YVER — Chapters of the World">
+<meta property="og:description" content="Outerwear told in chapters: every jacket begins with a real place and the craft people built there to live with cold.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rawajpret.store/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23120D0A'/%3E%3Cg fill='none' stroke='%23F1E6D6' stroke-width='7' stroke-linecap='round' stroke-dasharray='11 7'%3E%3Cpath d='M40 28 L60 60'/%3E%3Cpath d='M80 28 L60 60'/%3E%3Cpath d='M60 60 V92'/%3E%3C/g%3E%3Ccircle cx='60' cy='92' r='6' fill='%23F08A3C'/%3E%3C/svg%3E">
+  <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>YVER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&display=swap">
+</head>
+<body>
+<style>
+/* Single committed look: warm workshop dark, cutting-mat olive, bezier-handle orange */
+:root{
+  --ground:#120D0A; --panel:#1B1511; --cream:#F1E6D6; --soft:#D9CFC1; --muted:#8C8074; --dim:#4A3F36;
+  --mat:#46553A; --grid:rgb(241 230 214/.07); --handle:#F08A3C;
+  --g:clamp(16px,4vw,48px);
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ground);color:var(--cream);font:15px/1.55 var(--body)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+.pad{padding-inline:var(--g)}
+.cap{font:500 12px/1.5 var(--body);letter-spacing:.14em;text-transform:uppercase}
+.mono{font:500 12px var(--mono);letter-spacing:.02em}
+.muted{color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px dashed var(--handle);outline-offset:3px}
+.grid-bg{background-color:var(--mat);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.btn{display:inline-block;border:0;border-radius:999px;padding:12px 22px;background:var(--cream);color:var(--ground);font-weight:700;text-decoration:none}
+.btn.ghost{background:none;color:var(--cream);box-shadow:inset 0 0 0 1px var(--dim)}
+.btn.ghost:hover{background:var(--cream);color:var(--ground)}
+.back{color:var(--muted);text-decoration:none}
+.back:hover{color:var(--cream)}
+.h-xl{font:700 clamp(36px,5.6vw,80px)/1 var(--display);letter-spacing:-.02em;margin:10px 0 0;max-width:16ch;text-wrap:balance}
+.roman{font:italic 500 34px/1 var(--serif);color:var(--handle)}
+.todo{background:rgb(240 138 60/.16);color:var(--handle);border-radius:4px;padding:1px 5px;font-family:var(--mono);font-size:13px}
+.note{border-left:2px solid var(--handle);padding-left:12px;color:var(--muted);font-size:14px}
+.pill{font:500 11px var(--mono);text-transform:uppercase;border:1px solid var(--dim);border-radius:99px;padding:3px 8px;white-space:nowrap}
+.pill.open{border-color:var(--handle);color:var(--handle)}
+.x{background:none;border:0;font-size:26px;line-height:1;padding:2px 8px}
+
+/* loader */
+/* loader: coordinates roll and lock while one stitched thread draws the globe, which flattens into a horizon */
+#loader{position:fixed;inset:0;z-index:100;display:grid;place-content:center;justify-items:center;gap:14px;cursor:pointer;background-color:#0B0806;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;transition:transform .9s cubic-bezier(.7,0,.2,1)}
+#loader.out{transform:translateY(-100%)}
+#loader svg{width:min(360px,72vw);overflow:visible}
+.ld-coord{font:500 clamp(18px,2.4vw,26px) var(--mono);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.ld-skip{position:absolute;right:var(--g);bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.draw{stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 1.1s cubic-bezier(.5,0,.3,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* page transition veil */
+#veil{position:fixed;inset:0;z-index:90;background:var(--ground);display:grid;place-content:center;justify-items:center;gap:12px;opacity:0;pointer-events:none}
+#veil .mono{font-size:clamp(18px,2.4vw,26px);font-variant-numeric:tabular-nums}
+
+/* header + menu */
+header{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) var(--g) 18px;mix-blend-mode:difference}
+.logo{display:inline-flex;align-items:center;gap:10px;font:500 22px/1 var(--serif);letter-spacing:.34em;color:var(--cream);text-decoration:none}
+.mark{width:28px;height:28px;flex:none}
+header nav{display:flex;align-items:center;gap:22px}
+header nav a{color:var(--cream);text-decoration:none}
+header nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.menu-btn{background:none;border:1px solid var(--cream);border-radius:999px;padding:6px 16px}
+@media (max-width:560px){header nav a{display:none}.logo{font-size:19px;letter-spacing:.26em}}
+#menu{width:100%;max-width:none;height:100%;max-height:none;margin:0;border:0;border-radius:0;background:var(--ground);padding:calc(18px + env(safe-area-inset-top,0px)) var(--g) calc(32px + env(safe-area-inset-bottom,0px))}
+#menu::backdrop{background:var(--ground)}
+.menu-top{display:flex;justify-content:space-between;align-items:center}
+.menu-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--g);margin-top:clamp(32px,6vh,72px)}
+.menu-ch{list-style:none;margin:0;padding:0}
+.menu-ch a{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:baseline;gap:4px 16px;padding:14px 0;border-bottom:1px solid var(--dim);color:var(--cream);text-decoration:none}
+.menu-ch a:hover b{color:var(--handle)}
+.menu-ch b{font:700 clamp(24px,3.6vw,44px)/1.05 var(--display);letter-spacing:-.01em;transition:color .2s}
+.menu-ch .meta{grid-column:2 / -1}
+.menu-side{display:flex;flex-direction:column;gap:14px}
+.menu-side a,.menu-side button{background:none;border:0;padding:0;text-align:left;color:var(--cream);text-decoration:none;font:700 20px var(--display)}
+.menu-side a:hover,.menu-side button:hover{color:var(--handle)}
+@media (max-width:760px){.menu-body{grid-template-columns:1fr}}
+
+/* hero */
+.hero{position:relative;min-height:clamp(560px,92vh,900px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:var(--g);padding-block:calc(84px + env(safe-area-inset-top,0px)) 32px}
+.word{font:500 clamp(66px,11vw,190px)/.85 var(--serif);letter-spacing:.16em;margin:0;color:var(--cream)}
+.house-line{display:block;margin-top:14px;letter-spacing:.42em}
+.hero .side{display:flex;flex-direction:column;justify-content:space-between;gap:28px;position:relative;z-index:2}
+.hero .lede{margin:0;max-width:34ch}
+.hero .lede b{display:block;font:italic 500 clamp(26px,2.6vw,36px)/1.15 var(--serif);margin-bottom:12px;text-transform:none;letter-spacing:0}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.stage{position:relative;border-radius:18px;overflow:hidden;display:grid;place-items:center;min-height:420px;perspective:900px;box-shadow:inset 0 0 0 1px rgb(0 0 0/.25),0 30px 80px rgb(0 0 0/.5)}
+.stage::after{content:"";position:absolute;inset:14px;border:1px dashed rgb(241 230 214/.18);border-radius:10px;pointer-events:none}
+.tilt{width:min(62%,380px);transform:rotateX(var(--rx,0deg)) rotateY(calc(var(--ry,0deg) + var(--sy,0deg)));transition:transform .25s ease-out;position:relative}
+.tilt .bp{position:absolute;left:-10%;top:-4.545%;width:120%;height:109.09%;opacity:.8} /* viewBox -20 -10 240 240 over the 200×220 jacket */
+.stage .tag{position:absolute;font:500 12px var(--mono);color:var(--cream);opacity:.85}
+.t1{top:26px;right:28px;text-align:right}.t2{top:46px;right:28px;text-align:right}.t3{bottom:24px;left:28px}.t4{bottom:24px;right:28px}
+@media (max-width:760px){.hero{grid-template-columns:1fr}.stage{min-height:360px}}
+
+/* jacket drawing (shared) */
+.fig{filter:drop-shadow(0 22px 24px rgb(0 0 0/.45))}
+.jacket{position:relative;aspect-ratio:200/220;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+/* volume: darker sides where sleeves turn away, soft highlight down the chest */
+.jacket::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgb(0 0 0/.4),rgb(0 0 0/0) 20%,rgb(255 255 255/.1) 42%,rgb(0 0 0/0) 62%,rgb(0 0 0/.36)),linear-gradient(180deg,rgb(255 255 255/.08),rgb(0 0 0/0) 30%,rgb(0 0 0/.2))}
+.jacket.zip::after{content:"";position:absolute;left:50%;top:10%;bottom:2%;width:2px;background:repeating-linear-gradient(180deg,rgb(0 0 0/.55) 0 2px,rgb(255 255 255/.45) 2px 4px)}
+.jacket svg{position:absolute;inset:0;width:100%;height:100%}
+.tex-quilt{background:repeating-linear-gradient(45deg,transparent 0 16px,rgb(0 0 0/.32) 16px 17px),repeating-linear-gradient(-45deg,transparent 0 16px,rgb(0 0 0/.32) 16px 17px),linear-gradient(160deg,var(--c1),var(--c2))}
+.tex-cord{background:repeating-linear-gradient(90deg,rgb(255 255 255/.14) 0 2px,rgb(0 0 0/.2) 2px 4px),linear-gradient(160deg,var(--c1),var(--c2))}
+.tex-puff{background:repeating-linear-gradient(180deg,rgb(255 255 255/.32) 0,rgb(255 255 255/0) 11px,rgb(0 0 0/.22) 21px,rgb(0 0 0/.5) 23px,rgb(255 255 255/.32) 24px),linear-gradient(120deg,var(--c1),var(--c2))}
+.tex-sherpa{background:radial-gradient(circle,rgb(255 255 255/.55) 0 2px,transparent 3px) 0 0/8px 8px,radial-gradient(circle,rgb(255 255 255/.35) 0 2.5px,transparent 3.5px) 4px 4px/8px 8px,linear-gradient(160deg,var(--c1),var(--c2))}
+.tex-wool{background:repeating-linear-gradient(45deg,rgb(255 255 255/.07) 0 1px,transparent 1px 3px),linear-gradient(160deg,var(--c1),var(--c2))}
+.stitch{fill:none;stroke-width:2.4;stroke-dasharray:4 2.2;stroke-linecap:round}
+.run{animation:run 6s linear infinite}
+@keyframes run{to{stroke-dashoffset:-62}}
+
+/* home: statement, house, chapters, requests */
+.statement{padding-block:clamp(80px,14vw,180px)}
+#line{font:700 clamp(30px,5.2vw,76px)/1.08 var(--display);letter-spacing:-.02em;margin:0;max-width:18ch;text-wrap:balance}
+#line span{color:var(--dim);transition:color .3s}
+#line span.on{color:var(--cream)}
+.statement>.cap{margin-top:28px;display:block}
+.house{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:var(--g);margin-top:clamp(56px,8vw,110px);align-items:start}
+.house p{margin:0 0 16px;font-size:17px;line-height:1.65;max-width:52ch}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--dim);border:1px solid var(--dim);border-radius:14px;overflow:hidden;margin:0}
+.facts div{background:var(--ground);padding:18px}
+.facts dd{margin:6px 0 0;font:700 clamp(28px,3.4vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
+@media (max-width:760px){.house{grid-template-columns:1fr}}
+.section{padding-block:clamp(56px,8vw,100px)}
+.section-head{margin-bottom:28px}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.ch-card{display:flex;flex-direction:column;gap:6px;background:var(--panel);border-radius:16px;padding:20px;color:var(--cream);text-decoration:none;border:1px solid transparent;transition:border-color .2s}
+.ch-card:hover{border-color:var(--handle)}
+.ch-card .top{display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:10px}
+.ch-card b{font:700 22px/1.15 var(--display)}
+.alloc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--dim);border:1px solid var(--dim);border-radius:16px;overflow:hidden}
+.alloc div{background:var(--ground);padding:22px}
+.alloc h3{font:700 16px var(--display);margin:10px 0 6px}
+.alloc p{margin:0;color:var(--muted);font-size:14px}
+
+/* footer + dialogs */
+footer{padding-block:60px calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--dim)}
+footer .word{font-size:clamp(76px,20vw,320px);text-align:center;letter-spacing:.2em;padding-left:.2em}
+footer .mark{display:block;width:72px;height:72px;margin:0 auto 24px}
+.legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px}
+.legal-links{display:flex;gap:18px;flex-wrap:wrap}
+.legal-links button{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--muted)}
+.legal-links button:hover{color:var(--cream);text-decoration:underline;text-underline-offset:3px}
+dialog{background:var(--panel);color:var(--cream);border:1px solid var(--dim);border-radius:16px;padding:24px;width:min(640px,calc(100% - 32px));max-height:min(80vh,720px)}
+dialog::backdrop{background:rgb(0 0 0/.6)}
+.dlg-head{display:flex;justify-content:space-between;align-items:start;gap:16px;margin-bottom:12px}
+.dlg-head h2{font:700 22px/1.2 var(--display);margin:0}
+dialog h3{font:700 13px var(--body);text-transform:uppercase;letter-spacing:.1em;margin:20px 0 6px;color:var(--muted)}
+dialog p{margin:0 0 6px;max-width:62ch}
+.req form{display:grid;gap:14px}
+.req label{display:grid;gap:6px;font:500 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.req input,.req select,.req textarea,.pv select{width:100%;background:var(--ground);border:1px solid var(--dim);border-radius:10px;padding:11px 14px;color:var(--cream);font:15px var(--body)}
+.req textarea{min-height:90px;resize:vertical}
+dialog.drawer{inset:0 0 0 auto;margin:0;width:min(480px,100%);max-width:none;height:100%;max-height:none;border-radius:0;border-width:0 0 0 1px;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto}
+dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes slide{from{transform:translateX(100%)}}
+.req-sum{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;align-items:center;padding:12px;background:var(--ground);border-radius:12px;margin-bottom:18px}
+.req-sum .fig{filter:none}
+.req-sum div{display:grid;gap:2px}
+.req-sum b{font:700 16px/1.2 var(--display)}
+.req .check{display:flex;gap:10px;align-items:flex-start;font:14px/1.5 var(--body);letter-spacing:0;text-transform:none;color:var(--soft)}
+.req .check input{width:auto;margin-top:4px;accent-color:var(--handle)}
+.link{background:none;border:0;padding:0;color:var(--handle);text-decoration:underline;text-underline-offset:3px;font:inherit}
+.done-h{font:700 28px/1.1 var(--display);margin:6px 0 16px}
+.steps{margin:20px 0;padding-left:20px;display:grid;gap:12px;color:var(--soft)}
+.steps b{display:block;color:var(--cream)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+
+/* atlas */
+.view-top{padding-block:calc(96px + env(safe-area-inset-top,0px)) 80px}
+.atlas-head{margin-bottom:28px}
+.atlas-body{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:var(--g);align-items:start}
+.map{position:relative;width:100%;aspect-ratio:1/1;max-height:78vh;border-radius:18px;background:radial-gradient(circle at 50% 40%,#1A1712,#0B0907 70%);overflow:hidden;border:1px solid var(--dim)}
+.map canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:pan-y}
+.map-hint{position:absolute;left:18px;bottom:14px;pointer-events:none}
+.map-coord{position:absolute;right:18px;top:16px;color:var(--muted);pointer-events:none}
+.chapters{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.chapters li{display:flex;flex-direction:column;gap:8px}
+.chap{width:100%;text-align:left;background:var(--panel);border:1px solid transparent;border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:4px 14px;align-items:start}
+.chap:hover{border-color:var(--dim)}
+.chap[aria-current="true"]{border-color:var(--handle)}
+.chap .roman{font-size:32px;grid-row:span 4}
+.chap b{font:700 17px/1.2 var(--display)}
+.chap .meta{grid-column:2 / -1}
+.chapters .btn{align-self:flex-end}
+.pin-card{position:absolute;left:14px;right:14px;bottom:14px;background:rgb(27 21 17/.95);border:1px solid var(--dim);border-radius:14px;padding:16px 48px 16px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 14px;align-items:center;animation:rise .3s ease-out}
+.pin-card .roman{font-size:40px}
+.pin-card div{display:grid;gap:2px}
+.pin-card b{font:700 20px/1.15 var(--display)}
+.pin-card .btn,.pin-card .pill{grid-column:1 / -1;justify-self:start}
+.pin-card .x{position:absolute;top:8px;right:8px}
+@keyframes rise{from{transform:translateY(12px);opacity:0}}
+@media (max-width:860px){.atlas-body{grid-template-columns:1fr}}
+
+/* chapter (tale) */
+.tale-wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.tale-scene{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#070A12}
+.tale-scene canvas{width:100%;height:100%;display:block}
+.scene-cap{position:absolute;left:var(--g);bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.scene-coord{position:absolute;left:var(--g);top:calc(80px + env(safe-area-inset-top,0px));color:var(--muted)}
+.scene-cap,.scene-coord{background:rgb(7 10 18/.7);padding:4px 8px;border-radius:6px}
+.beats{padding-inline:var(--g)}
+.beat{min-height:100vh;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-block:120px;max-width:580px}
+.beat .roman{font-size:64px}
+.beat h2{font:700 clamp(28px,3.4vw,46px)/1.05 var(--display);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.beat p{margin:0;font-size:17px;line-height:1.7;color:var(--soft);max-width:52ch}
+.tale-title{font:800 clamp(56px,8vw,128px)/.9 var(--display);letter-spacing:-.03em;margin:0}
+.origin{font:italic 18px/1.45 var(--serif);color:var(--muted)}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;margin:8px 0 0;padding-top:16px;border-top:1px solid var(--dim)}
+.spec dt{font:500 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:0;font:500 13px var(--mono)}
+@media (max-width:860px){
+  .tale-wrap{grid-template-columns:1fr}
+  .tale-scene{height:40vh;z-index:2}
+  .scene-coord{top:calc(64px + env(safe-area-inset-top,0px));left:auto;right:var(--g)}
+  .beat{min-height:62vh;padding-block:48px}
+}
+.pieces{padding-block:100px 80px}
+.pieces-head p{margin:10px 0 28px;max-width:48ch;color:var(--soft)}
+.piece-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.piece{background:var(--panel);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;color:var(--cream);text-decoration:none;border:1px solid transparent;transition:border-color .2s}
+.piece:hover{border-color:var(--dim)}
+.piece .fig{padding:6% 12%;background:radial-gradient(circle at 50% 42%,#2A241D,transparent 70%);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.piece:hover .fig{transform:translateY(-4px) rotate(-1.5deg)}
+.cat{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cat.hot{color:var(--handle)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.piece b{font:700 16px/1.25 var(--display)}
+.price{font:500 13px var(--mono);white-space:nowrap}
+.piece .more{margin-top:auto;color:var(--handle)}
+.partners{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--g);margin-top:64px;padding-top:32px;border-top:1px solid var(--dim)}
+.partners h3{font:700 18px var(--display);margin:0 0 12px}
+.partners p,.partners li{color:var(--soft);font-size:15px}
+.partners ul{margin:0;padding-left:18px;display:grid;gap:6px}
+
+/* piece page */
+.pv{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:var(--g);align-items:start;margin-top:20px}
+.pv-stage{position:sticky;top:calc(80px + env(safe-area-inset-top,0px));border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;height:min(80vh,720px)}
+.pv-stage .seg{align-self:flex-end}
+.seg{display:inline-flex;border:1px solid rgb(241 230 214/.3);border-radius:999px;padding:4px;background:rgb(18 13 10/.4)}
+.seg button{border:0;background:none;border-radius:999px;padding:7px 16px;font:500 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--cream)}
+.seg button[aria-pressed="true"]{background:var(--cream);color:var(--ground)}
+.form{position:relative;height:calc(100% - 84px);aspect-ratio:200/400;max-width:100%;animation:bob 5s ease-in-out infinite}
+.form>svg{position:absolute;inset:0;width:100%;height:100%}
+.slot{position:absolute;left:0;top:16%;width:100%;height:55%}
+.slot .fig.land{animation:land .55s cubic-bezier(.3,1.6,.5,1)}
+.pv-flat{height:calc(100% - 58px);display:grid;place-items:center;width:100%}
+.pv-flat .fig{width:min(78%,440px)}
+.shadow{width:36%;height:14px;border-radius:50%;background:rgb(0 0 0/.35);filter:blur(6px);animation:shade 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px)}}
+@keyframes shade{50%{transform:scale(.8);opacity:.6}}
+@keyframes land{0%{transform:translateY(-14px) scale(1.05,.96)}100%{transform:none}}
+.pv-info{display:flex;flex-direction:column;gap:16px;padding-bottom:40px}
+.pv-info h1{font:700 clamp(32px,4vw,56px)/1.02 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance}
+.pv-info .price{font-size:16px}
+.pv-info>p{margin:0;font-size:17px;line-height:1.65;color:var(--soft);max-width:50ch}
+.pv-buy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+.pv-buy label{display:grid;gap:6px}
+details{border-top:1px solid var(--dim);padding-block:14px}
+details:last-of-type{border-bottom:1px solid var(--dim)}
+summary{cursor:pointer;font:500 12px var(--body);letter-spacing:.14em;text-transform:uppercase}
+details p{color:var(--soft);margin:10px 0 0}
+.table-wrap{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;width:100%;font:500 13px var(--mono);font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--dim)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:500}
+.pv-nav{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:20px;border-top:1px solid var(--dim)}
+@media (max-width:860px){
+  .pv{grid-template-columns:1fr}
+  .pv-stage{position:relative;top:0;height:62vh}
+}
+.still,.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.run,.form,.shadow,.draw,.slot .fig.land,.pin-card,dialog.drawer[open]{animation:none}.draw{stroke-dashoffset:0}}
+</style>
+
+<div id="loader" aria-hidden="true">
+  <svg viewBox="0 0 400 400">
+    <defs>
+      <mask id="ldMask" maskUnits="userSpaceOnUse" x="-40" y="-40" width="480" height="480">
+        <ellipse class="draw ld-ring" cx="200" cy="200" rx="150" ry="150" pathLength="1000" fill="none" stroke="#fff" stroke-width="10"/>
+      </mask>
+    </defs>
+    <g id="ldGrid" stroke="rgb(241 230 214/.14)" fill="none">
+      <ellipse cx="200" cy="200" rx="150" ry="54"/><ellipse cx="200" cy="200" rx="54" ry="150"/><line x1="50" y1="200" x2="350" y2="200"/>
+    </g>
+    <ellipse class="ld-ring" cx="200" cy="200" rx="150" ry="150" fill="none" stroke="#F1E6D6" stroke-width="2.4" stroke-dasharray="9 6" stroke-linecap="round" mask="url(#ldMask)"/>
+    <circle id="ldPin" cx="213" cy="88" r="0" fill="#F08A3C"/>
+  </svg>
+  <span class="ld-coord" id="ldCoord">00°00′N 00°00′E</span>
+  <span class="cap muted">Locating chapter I · Skrei</span>
+  <span class="cap muted ld-skip">Click to skip</span>
+</div>
+<div id="veil" hidden aria-hidden="true"><span class="mono" id="veilCoord"></span><span class="cap muted" id="veilLabel"></span></div>
+
+<header>
+  <a class="logo" href="#top" aria-label="YVER, home"><svg class="mark" viewBox="0 0 120 120" aria-hidden="true"></svg>YVER</a>
+  <nav class="cap"><a href="#/atlas">Atlas</a><a href="#requests">How to request</a><button class="menu-btn cap" id="menuBtn" type="button" aria-haspopup="dialog">Menu</button></nav>
+</header>
+
+<dialog id="menu" aria-label="Menu">
+  <div class="menu-top"><a class="logo" href="#top" data-close aria-label="YVER, home"><svg class="mark" viewBox="0 0 120 120" aria-hidden="true"></svg>YVER</a><button class="menu-btn cap" type="button" data-close>Close</button></div>
+  <div class="menu-body">
+    <div>
+      <span class="cap muted">Chapters</span>
+      <ul class="menu-ch" id="menuChapters"></ul>
+    </div>
+    <div class="menu-side">
+      <span class="cap muted">The house</span>
+      <a href="#top" data-close>Home</a>
+      <a href="#/atlas" data-close>The Atlas</a>
+      <a href="#house" data-close>Our approach</a>
+      <a href="#requests" data-close>How to request</a>
+      <span class="cap muted" style="margin-top:20px">Legal</span>
+      <div class="legal-links cap" style="flex-direction:column;gap:8px">
+        <button type="button" data-legal="imprint">Impressum</button>
+        <button type="button" data-legal="privacy">Privacy</button>
+        <button type="button" data-legal="terms">Terms</button>
+        <button type="button" data-legal="withdrawal">Withdrawal</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<main id="top">
+  <section class="hero pad">
+    <div class="side">
+      <div><h1 class="word">YVER</h1><span class="cap muted house-line">Chapters of the World</span></div>
+      <p class="lede cap muted"><b>Garments that carry a place.</b>Each chapter starts with a real place and the craft people built there to live with cold. Six chapters, a few pieces each, released by request.</p>
+      <div class="ctas"><a class="btn" href="#/atlas">Enter the Atlas →</a><a class="btn ghost" href="#/story/skrei">Read chapter I</a></div>
+      <p class="cap muted">Chapter I · Skrei · Lofoten<br>Open for requests</p>
+    </div>
+    <div class="stage grid-bg" id="stage">
+      <div class="tilt" id="tilt"></div>
+      <span class="tag t1">CHAPTER I / SKREI</span>
+      <span class="tag t2">68°12′N 13°36′E</span>
+      <span class="tag t3">HJELL PARKA · SCALE 1:4</span>
+      <span class="tag t4">SCROLL ↓</span>
+    </div>
+  </section>
+
+  <section class="statement pad" id="house">
+    <p id="line">Every jacket carries a place, a craft, and the people who kept it alive.</p>
+    <span class="cap muted">Lofoten · Harris · Tōhoku · Kochkor · Chinchero · Amami Ōshima</span>
+    <div class="house">
+      <div>
+        <p>We don't design seasons. We design chapters. Each one begins where people learned to live with cold, wind or hard work, and with the craft they made to do it: a fishery, a loom, a needle, a dye bath.</p>
+        <p>Every piece is made in small numbers and released by request. It comes with a numbered certificate that names the chapter behind it and the people who made it.</p>
+      </div>
+      <dl class="facts">
+        <div><dt class="cap muted">Chapters</dt><dd>6</dd></div>
+        <div><dt class="cap muted">Pieces per chapter</dt><dd>5–6</dd></div>
+        <div><dt class="cap muted">Archive pieces</dt><dd>1 of 1</dd></div>
+        <div><dt class="cap muted">Restocks</dt><dd>0</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section pad">
+    <div class="section-head"><span class="cap muted">The chapters</span><h2 class="h-xl">Six places. Six crafts.</h2></div>
+    <div class="ch-grid" id="homeChapters"></div>
+  </section>
+
+  <section class="section pad" id="requests">
+    <div class="section-head"><span class="cap muted">How to request</span><h2 class="h-xl">Every piece is allocated.</h2></div>
+    <div class="alloc">
+      <div><span class="roman">I</span><h3>Request</h3><p>Choose a piece and your size, and tell us a little about yourself.</p></div>
+      <div><span class="roman">II</span><h3>Review</h3><p>Our team reads every request and replies within 48 hours.</p></div>
+      <div><span class="roman">III</span><h3>Private link</h3><p>If approved, you receive a private payment link, then the piece with its numbered certificate.</p></div>
+    </div>
+  </section>
+</main>
+
+<main id="atlasView" class="view-top pad" hidden>
+  <div class="atlas-head">
+    <span class="cap muted">The Atlas · 6 chapters</span>
+    <h1 class="h-xl">Every jacket starts somewhere.</h1>
+  </div>
+  <div class="atlas-body">
+    <div class="map">
+      <canvas id="atlasCanvas" role="img" aria-label="Globe showing where each chapter comes from. Use the list to open a chapter."></canvas>
+      <span class="mono map-coord" id="mapCoord"></span>
+      <span class="cap muted map-hint" id="mapHint">Drag to turn · select a pin</span>
+      <div class="pin-card" id="pinCard" hidden></div>
+    </div>
+    <ul class="chapters" id="chapterList"></ul>
+  </div>
+</main>
+
+<main id="taleView" hidden>
+  <div class="tale-wrap">
+    <div class="tale-scene">
+      <canvas id="sea" aria-hidden="true"></canvas>
+      <span class="mono scene-coord">68°12′N 13°36′E · Lofoten</span>
+      <span class="cap scene-cap" id="sceneCap" aria-live="polite">I — The place</span>
+    </div>
+    <div class="beats">
+      <div class="beat" data-mood="0">
+        <a class="back cap" href="#/atlas">← The Atlas</a>
+        <span class="cap muted">Chapter I · Lofoten, Norway</span>
+        <h1 class="tale-title">Skrei</h1>
+        <p>Every winter, Arctic cod leave the Barents Sea and swim south to spawn among the Lofoten islands. People have gone out to meet them for more than a thousand years. This chapter is built on that fishery.</p>
+        <p class="origin">Inspired by the Lofoten cod fishery. The history here is real. Our pieces are made by <span class="todo">[partner atelier — to be announced]</span>.</p>
+      </div>
+      <article class="beat" data-mood="0">
+        <span class="roman">I</span>
+        <h2>Sixty-eight degrees north</h2>
+        <p>In deep winter the sun stays below the horizon over Lofoten for weeks. Yet the harbours stay open: a branch of the Gulf Stream keeps the sea around the islands far milder than the latitude suggests. Granite peaks rise straight out of that water.</p>
+        <dl class="spec"><dt>Latitude</dt><dd>68° N</dd><dt>Polar night</dt><dd>About early December to early January</dd></dl>
+      </article>
+      <article class="beat" data-mood="1">
+        <span class="roman">II</span>
+        <h2>The wanderers come home</h2>
+        <p>Skrei are Arctic cod in their spawning years. They grow up in the Barents Sea, then swim south along the Norwegian coast to spawn in the waters around Lofoten in late winter. The name comes from an Old Norse word for "to wander".</p>
+        <dl class="spec"><dt>Season</dt><dd>About January to April</dd><dt>Journey</dt><dd>Up to roughly 1,000 km</dd></dl>
+      </article>
+      <article class="beat" data-mood="2">
+        <span class="roman">III</span>
+        <h2>The Lofoten fishery</h2>
+        <p>For centuries, fishermen from all along the coast travelled to Lofoten each winter and rowed out in open boats. They lived in rorbuer, small cabins built on stilts at the water's edge. The name means roughly "rower's cabin", and many still stand, painted red, in villages like Reine and Hamnøy.</p>
+      </article>
+      <article class="beat" data-mood="3">
+        <span class="roman">IV</span>
+        <h2>Dried by the wind</h2>
+        <p>Much of the catch is tied in pairs, hung on tall wooden racks called hjell and left outside for months. Cold, wind and time dry it, with no salt at all. The result, stockfish, keeps for years. From the Middle Ages it was shipped south through Bergen and traded across Europe.</p>
+        <dl class="spec"><dt>Drying</dt><dd>Outdoors, late winter into early summer</dd><dt>Preserved by</dt><dd>Wind and cold only</dd></dl>
+      </article>
+      <article class="beat" data-mood="4">
+        <span class="roman">V</span>
+        <h2>Rack and route</h2>
+        <p>Our embroidery takes two lines from this story. The grid of the drying racks is stitched across the body. The skrei's route south is a single unbroken chain-stitch line, running from collar to hem.</p>
+        <dl class="spec"><dt>Stitches</dt><dd>Up to 64,000 per piece</dd><dt>Hand-guided hours</dt><dd>Up to 38 per piece</dd></dl>
+      </article>
+    </div>
+  </div>
+
+  <section class="pieces pad">
+    <div class="pieces-head">
+      <span class="cap muted">VI — The pieces</span>
+      <h2 class="h-xl">Six pieces. All allocated.</h2>
+      <p>Every piece in this chapter is released by request. Open a piece to see its provenance, sizing and care.</p>
+    </div>
+    <div class="piece-grid" id="pieceGrid"></div>
+    <div class="partners">
+      <div>
+        <h3>Who we work with</h3>
+        <p>Atelier: <span class="todo">[name, city]</span><br>Embroidery: <span class="todo">[studio, city]</span><br>Wool: <span class="todo">[mill or source]</span></p>
+        <p><span class="todo">[Fair-pay and credit statement for every partner]</span></p>
+      </div>
+      <div>
+        <h3>Sources</h3>
+        <ul>
+          <li>Norwegian Seafood Council: the skrei and its season</li>
+          <li>Lofotmuseet, Kabelvåg: history of the Lofoten fishery</li>
+          <li>Hanseatic Museum, Bergen: the stockfish trade</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:40px"><a class="back cap" href="#/atlas">← Back to the Atlas</a></p>
+  </section>
+</main>
+
+<main id="pieceView" class="view-top pad" hidden>
+  <a class="back cap" href="#/story/skrei">← Chapter I · Skrei</a>
+  <div class="pv">
+    <div class="pv-stage grid-bg">
+      <div class="seg" role="group" aria-label="View">
+        <button type="button" data-pv="form" aria-pressed="true">On form</button>
+        <button type="button" data-pv="flat" aria-pressed="false">Flat</button>
+      </div>
+      <div class="form" id="pvForm">
+        <svg viewBox="0 0 200 400" aria-hidden="true">
+          <line x1="100" y1="270" x2="100" y2="372" stroke="#2A221C" stroke-width="6"/>
+          <path d="M100 372 L62 392 M100 372 L138 392 M100 372 V394" stroke="#2A221C" stroke-width="5" stroke-linecap="round"/>
+          <rect x="90" y="58" width="20" height="30" rx="6" fill="#CDBBA2"/>
+          <ellipse cx="100" cy="56" rx="14" ry="7" fill="#2A221C"/>
+          <path d="M78 84 Q100 94 122 84 L150 100 Q162 106 158 124 Q150 150 144 180 Q140 205 148 240 Q150 262 140 272 L60 272 Q50 262 52 240 Q60 205 56 180 Q50 150 42 124 Q38 106 50 100 Z" fill="#E4D5BF"/>
+        </svg>
+        <div class="slot" id="pvSlot"></div>
+      </div>
+      <div class="pv-flat" id="pvFlat" hidden></div>
+      <div class="shadow" id="pvShadow"></div>
+    </div>
+    <div class="pv-info" id="pvInfo"></div>
+  </div>
+  <nav class="pv-nav cap" id="pvNav" aria-label="Other pieces"></nav>
+</main>
+
+<footer class="pad">
+  <svg class="mark" viewBox="0 0 120 120" aria-hidden="true"></svg>
+  <div class="word" aria-hidden="true">YVER</div>
+  <div class="legal cap muted">
+    <span>© 2026 YVER · Chapters of the World</span>
+    <nav class="legal-links" aria-label="Legal">
+      <button type="button" data-legal="imprint">Impressum</button>
+      <button type="button" data-legal="privacy">Privacy</button>
+      <button type="button" data-legal="terms">Terms</button>
+      <button type="button" data-legal="withdrawal">Withdrawal</button>
+    </nav>
+  </div>
+</footer>
+
+<dialog id="reqDlg" class="req drawer" aria-labelledby="reqTitle">
+  <div class="dlg-head"><h2 id="reqTitle">Request a piece</h2><button type="button" class="x" data-close-req aria-label="Close">×</button></div>
+  <div class="req-sum" id="reqSum"></div>
+  <form id="reqForm">
+    <label for="reqPiece">Piece<select id="reqPiece" required></select></label>
+    <div class="two">
+      <label for="reqSize">Size<select id="reqSize"></select></label>
+      <label for="reqCity">City / country<input id="reqCity" autocomplete="address-level2" placeholder="e.g. Milan, Italy"></label>
+    </div>
+    <div class="two">
+      <label for="reqName">Name<input id="reqName" required autocomplete="name"></label>
+      <label for="reqEmail">Email<input id="reqEmail" type="email" required autocomplete="email"></label>
+    </div>
+    <label for="reqContact">Preferred contact<select id="reqContact"><option>Email</option><option>Phone call</option><option>Through my representative</option></select></label>
+    <label for="reqAbout">About you (optional)<textarea id="reqAbout" placeholder="What draws you to this chapter?"></textarea></label>
+    <label class="check" for="reqConsent"><input type="checkbox" id="reqConsent" required><span>I agree that YVER stores these details to review my request. <button type="button" class="link" data-legal="privacy">Privacy policy</button></span></label>
+    <button class="btn" type="submit">Send request</button>
+  </form>
+  <div id="reqDone" hidden aria-live="polite"></div>
+</dialog>
+<dialog id="legalDlg" aria-labelledby="legalTitle">
+  <div class="dlg-head"><h2 id="legalTitle"></h2><button type="button" class="x" id="legalClose" aria-label="Close">×</button></div>
+  <div id="legalBody"></div>
+</dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+const eur = n => "€" + n.toLocaleString("de-DE");
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const T = s => `<span class="todo">[${s}]</span>`;
+const dms = v => { const m = Math.round(Math.abs(v) * 60); return `${Math.floor(m/60)}°${String(m % 60).padStart(2, "0")}′`; };
+const coord = (lat, lon) => `${dms(lat)}${lat >= 0 ? "N" : "S"} ${dms(lon)}${lon >= 0 ? "E" : "W"}`;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const wrap = a => ((a + 540) % 360) - 180;
+
+// monogram (see brand/yver-monogram-dark.svg): chain-stitched Y inside a globe ring, orange knot and north tick
+document.querySelectorAll(".mark").forEach(s => s.innerHTML = `
+  <circle cx="60" cy="60" r="55" fill="none" stroke="#F1E6D6" stroke-width="2.4"/>
+  <ellipse cx="60" cy="60" rx="55" ry="18" fill="none" stroke="#F1E6D6" stroke-opacity=".3" stroke-width="1.6"/>
+  <g fill="none" stroke="#F1E6D6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="11 7">
+    <path d="M40 28 L60 60"/><path d="M80 28 L60 60"/><path d="M60 60 V92"/></g>
+  <circle cx="60" cy="92" r="6" fill="#F08A3C"/>`);
+
+/* ================= content ================= */
+const CHAPTERS = [
+  {id:"skrei",  num:"I",   title:"Skrei",           place:"Lofoten, Norway",       lat:68.2,   lon:13.6,   craft:"Cod fishery · stockfish",   pieces:6, from:1450, open:true},
+  {id:"harris", num:"II",  title:"Hebridean Weft",  place:"Isle of Harris, Scotland", lat:57.87, lon:-6.8,  craft:"Harris Tweed",              pieces:5, from:1900},
+  {id:"tohoku", num:"III", title:"Sashiko",         place:"Tōhoku, Japan",         lat:39.7,   lon:141.15, craft:"Layered running stitch",    pieces:6, from:2600},
+  {id:"kochkor",num:"IV",  title:"Shyrdak",         place:"Kochkor, Kyrgyzstan",   lat:42.21,  lon:75.75,  craft:"Felt mosaic",               pieces:5, from:2200},
+  {id:"cusco",  num:"V",   title:"Highland Loom",   place:"Chinchero, Peru",       lat:-13.39, lon:-72.05, craft:"Andean alpaca weaving",     pieces:5, from:2400},
+  {id:"amami",  num:"VI",  title:"Mud & Silk",      place:"Amami Ōshima, Japan",   lat:28.38,  lon:129.49, craft:"Mud-dyed silk",             pieces:6, from:3200},
+];
+// ponytail: stitch counts, hours and fabrics are draft specs until the atelier confirms them
+const PIECES = [
+  {id:"sk-archive", name:"Skrei Archive Coat",     cat:"Archive", ed:"1 of 1",  price:null, shape:"coat",    tex:"quilt",  c1:"#2F3A45", c2:"#171D24", motif:"route", mc:"#E8C38A",
+   line:"The whole chapter in one coat: the route south runs from collar to hem, over a quilted body in storm grey.",
+   mat:"Boiled wool, 720 gsm", lining:"Quilted knit jacquard", emb:"Route, chain-stitch", stitches:"64,000", hours:"38"},
+  {id:"sk-hjell",   name:"Hjell Parka",            cat:"Atelier", ed:"9 made",  price:4800, shape:"parka",   tex:"wool",   c1:"#3C4650", c2:"#232A31", motif:"rack",  mc:"#D9C7A8",
+   line:"Named after the drying racks. Their grid is stitched across the body, with rows of hanging fish worked in pale thread.",
+   mat:"Waxed boiled wool", lining:"Quilted cotton", emb:"Rack grid, chain-stitch", stitches:"52,000", hours:"30"},
+  {id:"sk-route",   name:"Northern Route Bomber",  cat:"Atelier", ed:"12 made", price:3600, shape:"bomber",  tex:"wool",   c1:"#141A26", c2:"#0B0F17", motif:"route", mc:"#E8C38A",
+   line:"A short bomber in night blue. One gold line traces the skrei's journey down the coast.",
+   mat:"Boiled wool", lining:"Cupro", emb:"Route, chain-stitch", stitches:"41,000", hours:"24"},
+  {id:"sk-rorbu",   name:"Rorbu Chore Coat",       cat:"Edition", ed:"30 made", price:2400, shape:"chore",   tex:"cord",   c1:"#8A2E24", c2:"#5E1D17", motif:"net",   mc:"#F1E6D6",
+   line:"In the red of the fishermen's cabins, with net stitching across the front.",
+   mat:"Heavy corduroy", lining:"Cotton twill", emb:"Net, running stitch", stitches:"18,000", hours:"9"},
+  {id:"sk-vestfjord",name:"Vestfjord Puffer",      cat:"Edition", ed:"50 made", price:1650, shape:"puffer",  tex:"puff",   c1:"#6F7A83", c2:"#3E464D",
+   line:"For the crossing to the islands: a storm-grey puffer with a high collar.",
+   mat:"Recycled nylon shell, down fill", lining:"Nylon taffeta", emb:"Chapter mark on the inside collar", stitches:"—", hours:"—"},
+  {id:"sk-hamnoy",  name:"Hamnøy Sherpa Trucker",  cat:"Edition", ed:"50 made", price:1450, shape:"trucker", tex:"sherpa", c1:"#D9D6CF", c2:"#B9B3A8",
+   line:"Named after one of Lofoten's oldest fishing villages. Heavy sherpa, horn buttons.",
+   mat:"Heavy wool sherpa", lining:"Unlined", emb:"Chapter mark on the chest pocket", stitches:"—", hours:"—"},
+];
+const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+const LEN = {bomber:66, trucker:66, puffer:74, chore:78, parka:92, coat:100};   // back length in cm, size XS
+
+/* ================= jacket drawing ================= */
+// Every style shares shoulders and neck (so it sits on the same mannequin) but has its own
+// length L, sleeve end S, hem half-width W, sleeve bulk o, neck, cuffs, hem, pockets and closure.
+const SHAPES = {
+  bomber:  {L:176, S:162, W:56, o:0, neck:"rib",    cuff:"rib",  hem:"rib",  pocket:"welt",  close:"zip"},
+  puffer:  {L:196, S:170, W:66, o:3, neck:"funnel", cuff:"rib",  hem:"seam", pocket:"welt",  close:"zip"},
+  coat:    {L:214, S:170, W:62, o:0, neck:"v",      cuff:"seam", hem:"seam", pocket:"welt",  close:"buttons"},
+  chore:   {L:200, S:168, W:62, o:0, neck:"point",  cuff:"seam", hem:"seam", pocket:"patch", close:"buttons"},
+  parka:   {L:214, S:170, W:66, o:1, neck:"hood",   cuff:"seam", hem:"seam", pocket:"patch", close:"zip"},
+  trucker: {L:178, S:162, W:60, o:0, neck:"point",  cuff:"seam", hem:"band", pocket:"chest", close:"buttons"},
+};
+const DK = 'stroke="rgb(0 0 0/.38)" fill="none"', LT = 'stroke="rgb(255 255 255/.16)" fill="none"';
+const mirror = d => d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, x, y) => `${200 - x} ${y}`);
+
+function outline({L, S, W, o, neck}){
+  const top = neck === "funnel" ? "L70 3 Q100 -1 130 3 L132 16"
+            : neck === "hood"   ? "C62 -2 138 -2 132 16"
+            : "Q100 8 132 16";                                   // back of collar rises behind the neck
+  return `M68 16 ${top} L152 26 Q178 38 ${186+o} 70 L${196+o} ${S} Q${197+o} ${S+12} ${186+o} ${S+13} L168 ${S+14} L162 112 ` +
+         `L${100+W} ${L} Q100 ${L+6} ${100-W} ${L} L38 112 L32 ${S+14} L${14-o} ${S+13} Q${3-o} ${S+12} ${4-o} ${S} L${14-o} 70 Q22 38 48 26 Z`;
+}
+const ribs = (x0, x1, y0, y1) => {
+  let s = `<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="rgb(0 0 0/.18)"/>`;
+  for (let x = x0 + 1.5; x < x1; x += 3) s += `<path d="M${x} ${y0} V${y1}" stroke="rgb(0 0 0/.22)" stroke-width=".8"/>`;
+  return s;
+};
+function details({L, S, W, neck, cuff, hem, pocket, close}){
+  let s = "";
+  // neckline: lining shows behind the neck
+  if (neck === "funnel") s += `<path d="M70 3 Q100 -1 130 3 Q100 11 70 3Z" fill="rgb(0 0 0/.5)"/><path d="M70 16 Q100 23 130 16" ${DK} stroke-width="1.5"/>`;
+  else if (neck === "hood") s += `<path d="M72 14 Q100 1 128 14 Q100 30 72 14Z" fill="rgb(0 0 0/.5)"/><path d="M66 16 Q100 -6 134 16" ${LT} stroke-width="1.5"/>`;
+  else s += `<path d="M68 16 Q100 8 132 16 Q100 36 68 16Z" fill="rgb(0 0 0/.5)"/>`;
+  if (neck === "rib") s += `<path d="M67 17 Q100 40 133 17" stroke="rgb(0 0 0/.3)" stroke-width="7" fill="none"/><path d="M69 22 Q100 44 131 22" ${LT} stroke-width="1.4"/>`;
+  if (neck === "point") s += `<path d="M68 16 L80 50 L100 34 Z" fill="rgb(0 0 0/.16)" stroke="rgb(0 0 0/.38)" stroke-width="1.2"/>` +
+                            `<path d="${mirror("M68 16 L80 50 L100 34 Z")}" fill="rgb(0 0 0/.16)" stroke="rgb(0 0 0/.38)" stroke-width="1.2"/>`;
+  if (neck === "v") s += `<path d="M72 20 L100 66 L128 20 Q100 34 72 20Z" fill="rgb(0 0 0/.34)"/><path d="M68 16 L100 66 L132 16" ${LT} stroke-width="1.2"/>`;
+  // armhole seams
+  s += `<path d="M48 26 Q44 70 38 112" ${DK} stroke-width="1.4"/><path d="${mirror("M48 26 Q44 70 38 112")}" ${DK} stroke-width="1.4"/>`;
+  s += `<path d="M50 28 Q46 70 40 112" ${LT}/><path d="${mirror("M50 28 Q46 70 40 112")}" ${LT}/>`;
+  // cuffs
+  if (cuff === "rib") s += ribs(-4, 40, S - 12, S + 16) + ribs(160, 204, S - 12, S + 16);
+  else s += `<path d="M0 ${S-8} L40 ${S}" ${DK} stroke-width="1.4"/><path d="M200 ${S-8} L160 ${S}" ${DK} stroke-width="1.4"/>`;
+  // hem
+  if (hem === "rib") s += ribs(30, 170, L - 14, L + 8);
+  else if (hem === "band") s += `<rect x="30" y="${L-16}" width="140" height="26" fill="rgb(0 0 0/.1)"/><path d="M30 ${L-16} H170" ${DK} stroke-width="1.2"/><path d="M30 ${L-12} H170" ${LT} stroke-dasharray="3 2"/>`;
+  else s += `<path d="M${100-W} ${L-8} Q100 ${L-2} ${100+W} ${L-8}" ${DK} stroke-width="1.2"/><path d="M${100-W} ${L-5} Q100 ${L+1} ${100+W} ${L-5}" ${LT} stroke-dasharray="3 2"/>`;
+  // pockets
+  const py = L - 52;
+  if (pocket === "welt") {
+    const w = `M56 ${py} L66 ${py+28}`;
+    s += `<path d="${w}" stroke="rgb(0 0 0/.6)" stroke-width="3" fill="none"/><path d="${mirror(w)}" stroke="rgb(0 0 0/.6)" stroke-width="3" fill="none"/>`;
+  }
+  if (pocket === "patch") for (const x of [50, 118]) {
+    s += `<rect x="${x}" y="${py-6}" width="32" height="36" rx="3" fill="rgb(0 0 0/.1)" stroke="rgb(0 0 0/.38)"/>` +
+         `<rect x="${x+2.5}" y="${py-3.5}" width="27" height="31" rx="2" ${LT} stroke-dasharray="3 2"/>` +
+         `<path d="M${x} ${py+2} H${x+32}" ${DK}/>`;
+  }
+  if (pocket === "chest") for (const x of [58, 116]) {
+    s += `<rect x="${x}" y="50" width="26" height="24" rx="2" fill="rgb(0 0 0/.1)" stroke="rgb(0 0 0/.38)"/>` +
+         `<path d="M${x} 50 h26 v8 l-13 4 l-13 -4z" fill="rgb(0 0 0/.12)" stroke="rgb(0 0 0/.38)"/>` +
+         `<circle cx="${x+13}" cy="60" r="2" fill="#2A221C"/>`;
+  }
+  // closure
+  if (close === "buttons") {
+    s += `<path d="M104 ${neck === "v" ? 66 : 30} V${L}" ${DK}/>`;
+    const y0 = neck === "v" ? 76 : 44, n = 5, step = (L - 20 - y0) / (n - 1);
+    for (let i = 0; i < n; i++) s += `<circle cx="100" cy="${(y0 + i*step).toFixed(1)}" r="3.2" fill="rgb(20 16 12/.85)" stroke="rgb(255 255 255/.25)" stroke-width=".8"/>`;
+  }
+  return s;
+}
+const GEO = {};
+for (const [k, s] of Object.entries(SHAPES)) {
+  const d = outline(s);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 220'><path d='${d}'/></svg>`;
+  GEO[k] = {d, mask: `url('data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, "%27")}')`, details: details(s)};
+}
+
+function motif(p, anim){
+  const a = `class="stitch${anim ? " run" : ""}" stroke="${p.mc}"`;
+  if (p.motif === "rack") {                          // drying racks with hanging fish
+    let s = "";
+    for (const x of [40, 80, 120, 160]) s += `<path ${a} d="M${x} 44 V204"/>`;
+    for (const y of [70, 120, 170]) {
+      s += `<path ${a} d="M18 ${y} H182"/>`;
+      for (let x = 28; x < 176; x += 12) s += `<path ${a} style="stroke-width:1.4" d="M${x} ${y+3} l-2.2 12 l2.2 4 l2.2 -4 z"/>`;
+    }
+    return s;
+  }
+  if (p.motif === "route")                           // the skrei's journey south, collar to hem
+    return `<path ${a} d="M150 30 C40 70 170 112 72 150 S112 196 62 214"/>` +
+      [[130,46],[100,78],[118,112],[84,146],[90,188]].map(([x, y]) => `<ellipse ${a} style="stroke-width:1.3" cx="${x}" cy="${y}" rx="5" ry="2"/>`).join("");
+  if (p.motif === "net") {
+    let s = "";
+    for (let k = -180; k <= 200; k += 22) s += `<path ${a} style="stroke-width:1.3" d="M${k} 40 L${k+180} 220 M${k+180} 40 L${k} 220"/>`;
+    return s;
+  }
+  return "";
+}
+function jacket(p, anim, cls = ""){
+  const g = GEO[p.shape], zip = SHAPES[p.shape].close === "zip" ? " zip" : "";
+  return `<div class="fig ${cls}"><div class="jacket tex-${p.tex}${zip}" style="--c1:${p.c1};--c2:${p.c2};--m:${g.mask}">
+  <svg viewBox="0 0 200 220" aria-hidden="true">${g.details}${p.motif ? motif(p, anim) : ""}</svg></div></div>`;
+}
+
+// blueprint: dashed outline + orange bezier handles over the hero jacket
+const HERO = PIECES.find(p => p.id === "sk-hjell");
+function blueprint(){
+  const d = GEO[HERO.shape].d;
+  const pts = d.match(/[MLQC][^MLQCZ]*/g).map(seg => seg.slice(1).trim().split(/[\s,]+/).slice(-2).map(Number));
+  const h = pts.map(([x,y], i) => {
+    const [dx,dy] = i % 3 === 0 ? [14,0] : [0,14];
+    return `<line x1="${x-dx}" y1="${y-dy}" x2="${x+dx}" y2="${y+dy}" stroke="#F08A3C" stroke-width="1.2"/>
+      <circle cx="${x-dx}" cy="${y-dy}" r="2" fill="#F08A3C"/><circle cx="${x+dx}" cy="${y+dy}" r="2" fill="#F08A3C"/>
+      <rect x="${x-2.5}" y="${y-2.5}" width="5" height="5" fill="#120D0A" stroke="#F08A3C"/>`;
+  }).join("");
+  return `<g stroke="rgb(241 230 214/.12)"><line x1="-20" y1="110" x2="220" y2="110"/><line x1="100" y1="-10" x2="100" y2="230"/></g>
+    <path d="${d}" fill="none" stroke="#F1E6D6" stroke-width="1.2" stroke-dasharray="2 3"/>${h}`;
+}
+
+// digits left of k·length are locked to `text`, the rest roll
+const scramble = (text, k) => [...text].map((ch, i) => /\d/.test(ch) && i >= k * text.length ? String(Math.random() * 10 | 0) : ch).join("");
+const ease = f => f * f * (3 - 2 * f);
+
+/* ================= loader ================= */
+// once per visit; waits for the fonts (max 2.5 s), then locks onto chapter I and flattens the globe into a horizon
+let loaderDone = false;
+(function load(){
+  let seen = false;
+  try { seen = sessionStorage.getItem("yver-intro") === "1"; sessionStorage.setItem("yver-intro", "1"); } catch {}
+  const L = $("#loader");
+  if (calm || seen) { L.hidden = true; loaderDone = true; return; }
+  let done = false;
+  const finish = () => {
+    if (done) return; done = true;
+    L.classList.add("out");
+    setTimeout(() => { L.hidden = true; loaderDone = true; }, 950);
+  };
+  L.addEventListener("click", finish);               // click skips the intro
+  const rings = L.querySelectorAll(".ld-ring"), grid = $("#ldGrid"), pinEl = $("#ldPin"), out = $("#ldCoord");
+  const target = coord(CHAPTERS[0].lat, CHAPTERS[0].lon);
+  let fontsReady = false;
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => fontsReady = true);
+  const t0 = performance.now(), MIN = 1100, MAX = 2500;
+  let lockAt = null;
+  (function tick(t){
+    if (done) return;
+    if (lockAt === null && t - t0 >= MIN && (fontsReady || t - t0 >= MAX)) lockAt = t;
+    if (lockAt === null) out.textContent = scramble(target, 0);
+    else {
+      const k = Math.min(1, (t - lockAt) / 450), f = ease(clamp((t - lockAt - 500) / 450, 0, 1));
+      out.textContent = scramble(target, k);
+      pinEl.setAttribute("r", 5 * k);
+      pinEl.style.opacity = grid.style.opacity = 1 - f;
+      rings.forEach(r => { r.setAttribute("ry", 150 * (1 - f)); r.setAttribute("rx", 150 + 50 * f); });
+      if (t - lockAt > 1050) return finish();
+    }
+    requestAnimationFrame(tick);
+  })(t0);
+})();
+
+/* ================= page transition ================= */
+let veilToken = 0;
+function veilTo(label, place, apply){
+  if (document.hidden) return apply();
+  const V = $("#veil"), my = ++veilToken, target = place ? coord(place.lat, place.lon) : "";
+  V.getAnimations().forEach(a => a.cancel());
+  $("#veilLabel").textContent = label;
+  $("#veilCoord").textContent = scramble(target, 0);
+  V.hidden = false;
+  V.animate([{opacity:0}, {opacity:1}], {duration:180, fill:"forwards"}).onfinish = () => {
+    if (my !== veilToken) return;
+    apply();
+    const t0 = performance.now();
+    (function roll(t){
+      if (my !== veilToken) return;
+      const k = Math.min(1, (t - t0) / 320);
+      $("#veilCoord").textContent = scramble(target, k);
+      if (k < 1) return requestAnimationFrame(roll);
+      V.animate([{opacity:1}, {opacity:0}], {duration:260, fill:"forwards"}).onfinish = () => { if (my === veilToken) V.hidden = true; };
+    })(t0);
+  };
+}
+
+/* ================= home ================= */
+$("#tilt").innerHTML = jacket(HERO, true) + `<svg class="bp" viewBox="-20 -10 240 240" aria-hidden="true">${blueprint()}</svg>`;
+if (!calm) $("#stage").addEventListener("pointermove", e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  $("#tilt").style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 24 + "deg");
+  $("#tilt").style.setProperty("--rx", ((e.clientY - r.top) / r.height - .5) * -18 + "deg");
+});
+const line = $("#line");
+line.innerHTML = line.textContent.split(" ").map(w => `<span>${w}</span>`).join(" ");
+const words = [...line.children];
+function light(){
+  const r = line.getBoundingClientRect();
+  const k = Math.min(1, Math.max(0, (innerHeight * .85 - r.top) / (r.height + innerHeight * .35)));
+  words.forEach((w, i) => w.classList.toggle("on", i < k * words.length + .5));
+}
+const heroEl = $(".hero");
+const turn = () => { if (!calm) $("#tilt").style.setProperty("--sy", Math.min(1, scrollY / heroEl.offsetHeight) * 50 + "deg"); };
+addEventListener("scroll", () => { if (view === "home") { light(); turn(); } }, {passive:true});
+light();
+const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("paused", !e.isIntersecting)));
+io.observe(heroEl);
+
+// chapter links: open chapters go to their story, the rest to the Atlas with that chapter selected
+const chHref = c => c.open ? `#/story/${c.id}` : "#/atlas";
+const chStatus = c => `<span class="pill ${c.open ? "open" : ""}">${c.open ? "Open for requests" : "In preparation"}</span>`;
+$("#homeChapters").innerHTML = CHAPTERS.map(c => `<a class="ch-card" href="${chHref(c)}" data-ch="${c.id}">
+  <span class="top"><span class="roman">${c.num}</span>${chStatus(c)}</span>
+  <b>${c.title}</b>
+  <span class="cap muted">${c.place}</span>
+  <span class="mono muted">${coord(c.lat, c.lon)}</span>
+  <span class="cap">${c.craft}</span>
+</a>`).join("");
+$("#menuChapters").innerHTML = CHAPTERS.map(c => `<li><a href="${chHref(c)}" data-ch="${c.id}" data-close>
+  <span class="roman">${c.num}</span><b>${c.title}</b>${chStatus(c)}
+  <span class="meta cap muted">${c.place} · ${c.craft}</span>
+</a></li>`).join("");
+let pendingSelect = null;
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-ch]");
+  if (!a) return;
+  pendingSelect = a.dataset.ch;
+  if (view === "atlas" && a.getAttribute("href") === "#/atlas") {   // same hash: no hashchange, select here
+    select(CHAPTERS.find(c => c.id === pendingSelect));
+    pendingSelect = null;
+  }
+});
+
+/* ================= menu + legal ================= */
+const menu = $("#menu");
+$("#menuBtn").onclick = () => menu.showModal();
+menu.addEventListener("click", e => { if (e.target.closest("[data-close]")) menu.close(); });
+
+// legal pages: structure only. Texts come from a generator (eRecht24, IT-Recht Kanzlei) — not written here.
+const LEGAL = {
+  imprint: ["Legal notice (Impressum)", `
+    <p class="note">Required for every commercial site in Germany. Replace each orange slot with your real details.</p>
+    <h3>Information pursuant to § 5 DDG</h3>
+    <p>${T("Full name, or company name + legal form")}<br>${T("Street and number")}<br>${T("Postcode and city")}<br>${T("Country")}</p>
+    <h3>Contact</h3>
+    <p>Email: ${T("email address")}<br>Phone: ${T("phone number")}</p>
+    <h3>VAT ID</h3>
+    <p>VAT identification number pursuant to § 27a UStG: ${T("DE… — remove this block if you don't have one")}</p>
+    <h3>Responsible for content</h3>
+    <p>${T("Name and address — only needed if you publish editorial content, e.g. a journal")}</p>`],
+  privacy: ["Privacy policy (Datenschutzerklärung)", `
+    <p class="note">Generate this with eRecht24 or IT-Recht Kanzlei and paste it here. It must name every service the site uses.</p>
+    <p>${T("Paste generated privacy policy")}</p>
+    <h3>Services to list</h3>
+    <p>Hosting provider · web fonts · request form and client records · payment provider · analytics or cookies, if any</p>`],
+  terms: ["Terms of sale (AGB)", `
+    <p class="note">Use terms from IT-Recht Kanzlei, Händlerbund or Trusted Shops. They must describe the request-and-approval process and private payment links.</p>
+    <p>${T("Paste generated terms of sale")}</p>`],
+  withdrawal: ["Right of withdrawal (Widerrufsbelehrung)", `
+    <p class="note">EU customers have a statutory 14-day right of withdrawal. Made-to-measure pieces can be excluded; confirm the wording with your generator or lawyer.</p>
+    <p>${T("Paste the withdrawal notice from your generator")}</p>
+    <h3>Model withdrawal form</h3>
+    <p>${T("Paste the model withdrawal form (Muster-Widerrufsformular)")}</p>`],
+};
+const legalDlg = $("#legalDlg");
+document.addEventListener("click", e => {
+  const k = e.target.dataset?.legal; if (!k) return;
+  if (menu.open) menu.close();
+  $("#legalTitle").textContent = LEGAL[k][0];
+  $("#legalBody").innerHTML = LEGAL[k][1];
+  legalDlg.showModal();
+});
+$("#legalClose").onclick = () => legalDlg.close();
+for (const dl of [legalDlg, $("#reqDlg")]) dl.addEventListener("click", e => {   // click on backdrop closes
+  if (e.target !== dl) return;                       // keyboard clicks on buttons report 0,0
+  const r = dl.getBoundingClientRect();
+  if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dl.close();
+});
+
+/* ================= router ================= */
+// #/atlas, #/story/<id>, #/piece/<id> are views; any other hash is an anchor on the home page
+const views = {home: $("#top"), atlas: $("#atlasView"), story: $("#taleView"), piece: $("#pieceView")};
+let view = null;
+function route(){
+  const h = location.hash;
+  let v = "home", label = "Home", place = null, piece = null;
+  if (h.startsWith("#/atlas")) { v = "atlas"; label = "The Atlas · six chapters"; }
+  else if (h.startsWith("#/story/")) {
+    place = CHAPTERS.find(c => c.open && h === "#/story/" + c.id);
+    if (!place) { location.replace("#/atlas"); return; }
+    v = "story"; label = `Chapter ${place.num} · ${place.title}`;
+  } else if (h.startsWith("#/piece/")) {
+    piece = PIECES.find(x => h === "#/piece/" + x.id);
+    if (!piece) { location.replace("#/story/skrei"); return; }
+    v = "piece"; place = CHAPTERS[0]; label = piece.name;
+  }
+  const changed = v !== view || (v === "piece" && piece !== curPiece);
+  const apply = () => {
+    if (piece) renderPiece(piece);
+    for (const k in views) views[k].hidden = k !== v;
+    view = v;
+    document.title = {home:"YVER", atlas:"The Atlas · YVER", story:`${place?.title} · YVER`, piece:`${piece?.name} · YVER`}[v];
+    if (v === "atlas" && pendingSelect) select(CHAPTERS.find(c => c.id === pendingSelect));
+    pendingSelect = null;
+    if (v !== "home") { if (changed) scrollTo({top:0, behavior:"instant"}); return; }
+    const el = h.length > 1 && document.getElementById(h.slice(1));
+    if (el) el.scrollIntoView(); else if (changed) scrollTo({top:0, behavior:"instant"});
+  };
+  // anchors inside the home page scroll without a veil; switching views plays it
+  (changed && view !== null && loaderDone && !calm) ? veilTo(label, place, apply) : apply();
+}
+addEventListener("hashchange", route);
+
+/* ================= shared canvas helpers ================= */
+function fit(c){
+  const r = c.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
+  if (!r.width) return 0;
+  const w = Math.round(r.width * d), h = Math.round(r.height * d);
+  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+  return d;
+}
+function mulberry32(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rnd = mulberry32(7);
+const STARS = Array.from({length:220}, () => ({x:rnd(), y:rnd(), r:rnd() * 1.3 + .2, p:rnd() * 6.28}));
+
+/* ================= atlas ================= */
+const ac = $("#atlasCanvas"), ax = ac.getContext("2d");
+let rot = {lon:-10, lat:30}, target = null, drag = null, pins = [], selected = "skrei", hoverPin = null, lastCoord = "";
+const rad = d => d * Math.PI / 180;
+function project(lat, lon, R, cx, cy){
+  const f = rad(lat), l = rad(lon - rot.lon), f0 = rad(rot.lat);
+  return {
+    x: cx + R * Math.cos(f) * Math.sin(l),
+    y: cy - R * (Math.cos(f0) * Math.sin(f) - Math.sin(f0) * Math.cos(f) * Math.cos(l)),
+    v: Math.sin(f0) * Math.sin(f) + Math.cos(f0) * Math.cos(f) * Math.cos(l) > 0,
+  };
+}
+function strokeVisible(pts){
+  ax.beginPath();
+  let pen = false;
+  for (const p of pts) { if (p.v) { pen ? ax.lineTo(p.x, p.y) : ax.moveTo(p.x, p.y); pen = true; } else pen = false; }
+  ax.stroke();
+}
+const LONS = Array.from({length:121}, (_, i) => -180 + i * 3), LATS = Array.from({length:61}, (_, i) => -90 + i * 3);
+function label(text, x, y, d, strong){
+  ax.font = `${strong ? 700 : 500} ${12 * d}px Manrope, system-ui, sans-serif`;
+  ax.fillStyle = strong ? "#F1E6D6" : "rgba(241,230,214,.7)";
+  const w = ax.measureText(text).width, left = x + 12 * d + w > ax.canvas.width - 8 * d;   // flip labels that would clip
+  ax.fillText(text, left ? x - 12 * d - w : x + 12 * d, y - 8 * d);
+}
+function drawAtlas(t){
+  const d = fit(ac); if (!d) return;
+  const W = ac.width, H = ac.height;
+  ax.clearRect(0, 0, W, H);
+  pins = [];
+  if (target) {
+    rot.lon = wrap(rot.lon + wrap(target.lon - rot.lon) * .08);
+    rot.lat += (target.lat - rot.lat) * .08;
+    if (Math.abs(wrap(target.lon - rot.lon)) < .2 && Math.abs(target.lat - rot.lat) < .2) target = null;
+  } else if (!drag && !hoverPin && !calm) rot.lon = wrap(rot.lon + .04);
+  const R = Math.min(W, H) * .4, cx = W / 2, cy = H / 2;
+  const g = ax.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R);
+  g.addColorStop(0, "#2A3140"); g.addColorStop(1, "#0E1118");
+  ax.fillStyle = g; ax.beginPath(); ax.arc(cx, cy, R, 0, 7); ax.fill();
+  ax.lineWidth = d; ax.strokeStyle = "rgba(241,230,214,.13)";
+  for (let lat = -75; lat <= 75; lat += 15) strokeVisible(LONS.map(lon => project(lat, lon, R, cx, cy)));
+  for (let lon = -180; lon < 180; lon += 15) strokeVisible(LATS.map(lat => project(lat, lon, R, cx, cy)));
+  ax.strokeStyle = "rgba(240,138,60,.35)"; ax.setLineDash([4 * d, 4 * d]);
+  strokeVisible(LONS.map(lon => project(0, lon, R, cx, cy)));
+  ax.setLineDash([]);
+  ax.strokeStyle = "rgba(241,230,214,.35)"; ax.beginPath(); ax.arc(cx, cy, R, 0, 7); ax.stroke();
+  for (const c of CHAPTERS) {
+    const p = project(c.lat, c.lon, R, cx, cy);
+    if (!p.v) continue;
+    const sel = c.id === selected;
+    if (c.open && !calm) {
+      const k = (t / 1600) % 1;
+      ax.strokeStyle = `rgba(240,138,60,${1 - k})`; ax.lineWidth = d;
+      ax.beginPath(); ax.arc(p.x, p.y, (6 + k * 16) * d, 0, 7); ax.stroke();
+    }
+    ax.fillStyle = c.open ? "#F08A3C" : "#F1E6D6";
+    ax.beginPath(); ax.arc(p.x, p.y, (sel ? 6 : 4.5) * d, 0, 7); ax.fill();
+    label(`${c.num} · ${c.title}`, p.x, p.y, d, sel);
+    pins.push({c, x: p.x / d, y: p.y / d});
+  }
+  const readout = `Centre ${coord(rot.lat, rot.lon)}`;
+  if (readout !== lastCoord) $("#mapCoord").textContent = lastCoord = readout;
+}
+const local = e => { const r = ac.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+const hit = ([x, y]) => pins.find(p => Math.hypot(p.x - x, p.y - y) < 18);
+ac.addEventListener("pointerdown", e => { drag = {x:e.clientX, y:e.clientY, lon:rot.lon, lat:rot.lat, moved:false}; ac.setPointerCapture(e.pointerId); });
+ac.addEventListener("pointermove", e => {
+  if (drag) {
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.hypot(dx, dy) > 4) drag.moved = true;
+    if (drag.moved) { target = null; rot.lon = wrap(drag.lon - dx * .3); rot.lat = clamp(drag.lat + dy * .3, -60, 60); }
+  }
+  hoverPin = hit(local(e));
+  ac.style.cursor = hoverPin ? "pointer" : drag ? "grabbing" : "grab";
+});
+// a pin turns the globe and opens its preview card; the card offers the way in
+ac.addEventListener("pointerup", e => {
+  const p = drag && !drag.moved && hit(local(e));
+  drag = null;
+  if (p) { select(p.c); showPinCard(p.c); }
+});
+function showPinCard(c){
+  const card = $("#pinCard");
+  card.innerHTML = `<button class="x" type="button" data-pc-close aria-label="Close preview">×</button>
+    <span class="roman">${c.num}</span>
+    <div><b>${c.title}</b><span class="cap muted">${c.place} · ${coord(c.lat, c.lon)}</span><span class="cap">${c.craft} · ${c.pieces} pieces · from ${eur(c.from)}</span></div>
+    ${c.open ? `<a class="btn" href="#/story/${c.id}">Enter chapter →</a>` : `<span class="pill">In preparation</span>`}`;
+  card.hidden = false;
+  $("#mapHint").hidden = true;
+}
+$("#pinCard").addEventListener("click", e => {
+  if (!e.target.closest("[data-pc-close]")) return;
+  $("#pinCard").hidden = true;
+  $("#mapHint").hidden = false;
+});
+ac.addEventListener("pointercancel", () => drag = null);
+ac.addEventListener("pointerleave", () => hoverPin = null);
+
+function select(c){
+  selected = c.id;
+  target = {lon:c.lon, lat:clamp(c.lat, -60, 60)};
+  renderChapters();
+}
+function renderChapters(){
+  $("#chapterList").innerHTML = CHAPTERS.map(c => `<li>
+    <button class="chap" data-id="${c.id}" aria-current="${c.id === selected}">
+      <span class="roman">${c.num}</span><b>${c.title}</b>${chStatus(c)}
+      <span class="meta cap muted">${c.place}</span>
+      <span class="meta mono muted">${coord(c.lat, c.lon)} · ${c.craft}</span>
+      <span class="meta cap">${c.pieces} pieces · from ${eur(c.from)}</span>
+    </button>
+    ${c.id === selected && c.open ? `<a class="btn" href="#/story/${c.id}">Enter the chapter →</a>` : ""}
+    ${c.id === selected && !c.open ? `<span class="cap muted" style="align-self:flex-end">This chapter is in preparation.</span>` : ""}
+  </li>`).join("");
+}
+$("#chapterList").addEventListener("click", e => {
+  const b = e.target.closest(".chap");
+  if (b) select(CHAPTERS.find(c => c.id === b.dataset.id));
+});
+renderChapters();
+
+/* ================= chapter scene ================= */
+const sc = $("#sea"), sx = sc.getContext("2d");
+const MOODS = [
+  {label:"I — The place",      amp:12, sp:.7,  aur:.9,  mode:"sea"},
+  {label:"II — The skrei",     amp:9,  sp:.6,  aur:.5,  mode:"migrate"},
+  {label:"III — The fishery",  amp:6,  sp:.35, aur:.35, mode:"net"},
+  {label:"IV — The stockfish", amp:4,  sp:.3,  aur:.2,  mode:"rack"},
+  {label:"V — The art",        amp:14, sp:.5,  aur:.7,  mode:"stitch"},
+];
+let mood = 0, cur = {...MOODS[0]}, phase = 0, fade = 1;
+function drawRacks(W, H, d){
+  const top = H * .28, base = H * .56;
+  for (let k = 0; k < 4; k++) {
+    const cx = W * (.14 + k * .24), span = W * .1;
+    sx.strokeStyle = "rgba(241,230,214,.45)"; sx.lineWidth = 2 * d;
+    sx.beginPath(); sx.moveTo(cx - 36 * d, base); sx.lineTo(cx, top); sx.lineTo(cx + 36 * d, base); sx.stroke();
+    for (const f of [.3, .62]) {
+      const y = top + (base - top) * f;
+      sx.beginPath(); sx.moveTo(cx - span, y); sx.lineTo(cx + span, y); sx.stroke();
+      sx.fillStyle = "rgba(214,196,160,.6)";
+      for (let x = cx - span + 5 * d; x < cx + span; x += 9 * d) {
+        const sway = calm ? 0 : Math.sin(phase * 2 + x * .05) * 1.5 * d;
+        sx.beginPath(); sx.ellipse(x + sway, y + 11 * d, 2.2 * d, 8 * d, 0, 0, 7); sx.fill();
+      }
+    }
+  }
+}
+function drawFish(W, H, d){
+  sx.fillStyle = "rgba(222,210,190,.55)";
+  for (let i = 0; i < 46; i++) {
+    const speed = 40 + (i * 37) % 50;
+    const x = ((i * 211 + phase * speed * 6) % (W / d + 60)) * d - 30 * d;
+    const y = H * (.58 + ((i * 53) % 100) / 100 * .34) + Math.sin(phase * 3 + i) * 4 * d;
+    sx.beginPath(); sx.ellipse(x, y, 7 * d, 2.2 * d, 0, 0, 7); sx.fill();
+    sx.beginPath(); sx.moveTo(x - 6 * d, y); sx.lineTo(x - 11 * d, y - 3 * d); sx.lineTo(x - 11 * d, y + 3 * d); sx.fill();
+  }
+}
+function drawSea(t, dt){
+  const d = fit(sc); if (!d) return;
+  const W = sc.width, H = sc.height, m = MOODS[mood];
+  for (const k of ["amp", "sp", "aur"]) cur[k] += (m[k] - cur[k]) * .04;
+  if (cur.mode !== m.mode) { cur.mode = m.mode; fade = 0; }
+  fade += (1 - fade) * .05;
+  if (!calm) phase += dt / 1000 * cur.sp;
+  const bg = sx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#070A12"); bg.addColorStop(.55, "#0C1420"); bg.addColorStop(1, "#101A1F");
+  sx.fillStyle = bg; sx.fillRect(0, 0, W, H);
+  for (const st of STARS) { sx.fillStyle = `rgba(241,230,214,${.25 + .35 * Math.abs(Math.sin(st.p + phase))})`; sx.fillRect(st.x * W, st.y * H * .45, st.r * d, st.r * d); }
+  // aurora curtains
+  for (let k = 0; k < 3; k++) {
+    const top = [], y0 = H * (.12 + k * .06);
+    for (let x = 0; x <= W; x += 12 * d) top.push([x, y0 + Math.sin(x / W * 6 + phase * .5 + k * 1.7) * H * .04]);
+    const gr = sx.createLinearGradient(0, y0 - H * .05, 0, y0 + H * .16);
+    const rgb = k === 1 ? "160,130,255" : "120,230,180";
+    gr.addColorStop(0, `rgba(${rgb},0)`); gr.addColorStop(.35, `rgba(${rgb},${cur.aur * .28})`); gr.addColorStop(1, `rgba(${rgb},0)`);
+    sx.fillStyle = gr; sx.beginPath();
+    top.forEach(([x, y], i) => i ? sx.lineTo(x, y) : sx.moveTo(x, y));
+    for (let i = top.length - 1; i >= 0; i--) sx.lineTo(top[i][0], top[i][1] + H * .14);
+    sx.fill();
+  }
+  sx.globalAlpha = fade;
+  if (cur.mode === "rack") drawRacks(W, H, d);
+  // swells; in the art beat one line turns gold: the route
+  const rows = [];
+  for (let i = 0; i < 9; i++) {
+    const y0 = H * (.5 + i * .052), A = cur.amp * d * (.6 + i * .12), pts = [];
+    for (let x = 0; x <= W + 6 * d; x += 6 * d)
+      pts.push([x, y0 + Math.sin(x / W * (5 + i * .4) * Math.PI + phase * (1 + i * .08) + i) * A + Math.sin(x / W * 13 - phase * .7 + i * 2) * A * .25]);
+    rows.push(pts);
+    const path = (dy = 0) => { sx.beginPath(); pts.forEach(([x, y], j) => j ? sx.lineTo(x, y + dy) : sx.moveTo(x, y + dy)); };
+    const lead = i === 4;
+    if (cur.mode === "stitch") {
+      sx.setLineDash([7 * d, 4 * d]); sx.lineDashOffset = -phase * 30 * d;
+      sx.strokeStyle = lead ? "#E8C38A" : "rgba(241,230,214,.35)";
+      sx.lineWidth = (lead ? 3 : 1.6) * d; path(); sx.stroke(); sx.setLineDash([]);
+    } else {
+      path(); sx.lineTo(W, H); sx.lineTo(0, H); sx.fillStyle = "rgba(8,14,20,.5)"; sx.fill();
+      sx.strokeStyle = "rgba(241,230,214,.28)"; sx.lineWidth = d; path(); sx.stroke();
+    }
+  }
+  if (cur.mode === "migrate") drawFish(W, H, d);
+  if (cur.mode === "net") {                          // net mesh between the swells
+    sx.strokeStyle = "rgba(241,230,214,.22)"; sx.lineWidth = d;
+    for (let i = 0; i < 8; i++) for (let j = 0; j < rows[i].length; j += 6) {
+      sx.beginPath(); sx.moveTo(...rows[i][j]); sx.lineTo(...rows[i + 1][j]); sx.stroke();
+    }
+  }
+  sx.globalAlpha = 1;
+}
+const beatIO = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  mood = +e.target.dataset.mood;
+  $("#sceneCap").textContent = MOODS[mood].label;
+}), {rootMargin:"-45% 0px -45% 0px"});
+document.querySelectorAll(".beat").forEach(b => beatIO.observe(b));
+
+/* ================= pieces ================= */
+const priceText = p => p.price ? eur(p.price) : "Price on request";
+$("#pieceGrid").innerHTML = PIECES.map(p => `<a class="piece" href="#/piece/${p.id}">
+  ${jacket(p)}
+  <span class="cat ${p.cat === "Archive" ? "hot" : ""}">${p.cat} · ${p.ed}</span>
+  <span class="row"><b>${p.name}</b><span class="price">${priceText(p)}</span></span>
+  <span class="cap muted">${p.mat}</span>
+  <span class="cap more">View piece →</span>
+</a>`).join("");
+
+let curPiece = null, pvMode = "form";
+function sizeTable(p){
+  const base = LEN[p.shape];
+  return `<div class="table-wrap"><table>
+    <thead><tr><th>Size</th>${SIZES.map(s => `<th>${s}</th>`).join("")}</tr></thead>
+    <tbody>
+      <tr><td>Chest (cm)</td>${SIZES.map((_, i) => `<td>${104 + i * 6}</td>`).join("")}</tr>
+      <tr><td>Back length (cm)</td>${SIZES.map((_, i) => `<td>${base + i * 2}</td>`).join("")}</tr>
+    </tbody></table></div>
+    <p>${T("Example measurements — replace with the atelier's grading")}</p>`;
+}
+function renderPiece(p){
+  curPiece = p;
+  const ch = CHAPTERS[0], i = PIECES.indexOf(p);
+  $("#pvSlot").innerHTML = jacket(p, true, "land");
+  $("#pvFlat").innerHTML = jacket(p, true);
+  $("#pvInfo").innerHTML = `
+    <span class="cat ${p.cat === "Archive" ? "hot" : ""}">${p.cat} · ${p.ed} · Chapter ${ch.num}, ${ch.title}</span>
+    <h1>${p.name}</h1>
+    <span class="price">${priceText(p)}</span>
+    <p>${p.line}</p>
+    <div class="pv-buy">
+      <label class="cap muted" for="pvSize">Size<select id="pvSize">${SIZES.map(s => `<option${s === "M" ? " selected" : ""}>${s}</option>`).join("")}<option>Made to measure</option></select></label>
+      <button class="btn" type="button" id="pvRequest">Request this piece</button>
+    </div>
+    <dl class="spec">
+      <dt>Chapter</dt><dd>${ch.num} · ${ch.title}, ${ch.place}</dd>
+      <dt>Inspired by</dt><dd>${ch.craft}</dd>
+      <dt>Shell</dt><dd>${p.mat}</dd>
+      <dt>Lining</dt><dd>${p.lining}</dd>
+      <dt>Embroidery</dt><dd>${p.emb}</dd>
+      <dt>Stitches</dt><dd>${p.stitches}</dd>
+      <dt>Hand-guided hours</dt><dd>${p.hours}</dd>
+      <dt>Made by</dt><dd>${T("partner atelier — to be announced")}</dd>
+    </dl>
+    <details><summary>Size guide</summary>${sizeTable(p)}</details>
+    <details><summary>Care and aftercare</summary>
+      <p>Air between wears and brush with a soft clothes brush. Specialist cleaning only. Never iron over embroidery.</p>
+      <p>${T("Decide: repair service for the life of the piece?")}</p></details>
+    <details><summary>Certificate</summary>
+      <p>Every piece comes with a numbered certificate naming its chapter, edition and makers.</p>
+      <p>${T("Planned: NFC tag in the lining that opens this page")}</p></details>`;
+  const prev = PIECES[(i + PIECES.length - 1) % PIECES.length], next = PIECES[(i + 1) % PIECES.length];
+  $("#pvNav").innerHTML = `<a class="back" href="#/piece/${prev.id}">← ${prev.name}</a><a class="back" href="#/piece/${next.id}">${next.name} →</a>`;
+  setPv(pvMode);
+}
+function setPv(m){
+  pvMode = m;
+  $("#pvForm").hidden = $("#pvShadow").hidden = m !== "form";
+  $("#pvFlat").hidden = m !== "flat";
+  document.querySelectorAll("[data-pv]").forEach(b => b.setAttribute("aria-pressed", b.dataset.pv === m));
+}
+document.querySelector(".pv-stage .seg").addEventListener("click", e => { if (e.target.dataset.pv) setPv(e.target.dataset.pv); });
+
+/* ================= request ================= */
+$("#reqPiece").innerHTML = PIECES.map(p => `<option value="${p.id}">${p.name} — ${p.price ? eur(p.price) : "price on request"}</option>`).join("");
+$("#reqSize").innerHTML = [...SIZES, "Made to measure"].map(s => `<option>${s}</option>`).join("");
+const reqDlg = $("#reqDlg");
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"}[c]));
+function updateSum(){
+  const p = PIECES.find(x => x.id === $("#reqPiece").value);
+  $("#reqSum").innerHTML = `${jacket(p)}<div><b>${p.name}</b><span class="cat">${p.cat} · ${p.ed}</span><span class="price">${priceText(p)}</span></div>`;
+}
+$("#reqPiece").addEventListener("change", updateSum);
+$("#pvInfo").addEventListener("click", e => {
+  if (e.target.id !== "pvRequest") return;
+  $("#reqPiece").value = curPiece.id;
+  $("#reqSize").value = $("#pvSize").value;
+  $("#reqForm").hidden = false;
+  $("#reqSum").hidden = false;
+  $("#reqDone").hidden = true;
+  $("#reqTitle").textContent = "Request a piece";
+  updateSum();
+  reqDlg.showModal();
+});
+reqDlg.addEventListener("click", e => { if (e.target.closest("[data-close-req]")) reqDlg.close(); });
+// ponytail: demo only — requests need a form backend (Shopify, Airtable, email) before launch
+$("#reqForm").onsubmit = e => {
+  e.preventDefault();
+  const p = PIECES.find(x => x.id === $("#reqPiece").value);
+  const ref = `YVER-${CHAPTERS[0].num}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+  $("#reqDone").innerHTML = `
+    <h3 class="done-h">Thank you, ${esc($("#reqName").value)}.</h3>
+    <dl class="spec">
+      <dt>Reference</dt><dd>${ref}</dd>
+      <dt>Piece</dt><dd>${p.name}</dd>
+      <dt>Size</dt><dd>${esc($("#reqSize").value)}</dd>
+      <dt>Reply to</dt><dd>${esc($("#reqEmail").value)}</dd>
+    </dl>
+    <ol class="steps">
+      <li><b>Review</b>Our team reads your request and replies within 48 hours.</li>
+      <li><b>Private link</b>If it's approved, you receive a private payment link.</li>
+      <li><b>Delivery</b>Your piece arrives with its numbered certificate.</li>
+    </ol>
+    <p class="note">Demo: this request was not sent anywhere. Connect a form backend before launch.</p>
+    <button class="btn" type="button" data-close-req style="margin-top:16px">Close</button>`;
+  $("#reqTitle").textContent = "Request received";
+  $("#reqForm").hidden = true;
+  $("#reqDone").hidden = false;
+  $("#reqForm").reset();
+};
+
+/* ================= one animation loop for whichever view is showing ================= */
+let lastT = performance.now();
+(function frame(t){
+  const dt = Math.min(50, t - lastT); lastT = t;
+  if (view === "atlas") drawAtlas(t);
+  else if (view === "story") drawSea(t, dt);
+  requestAnimationFrame(frame);
+})(lastT);
+route();
+</script>
+
+</body>
+</html>
