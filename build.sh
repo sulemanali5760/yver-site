@@ -23,7 +23,7 @@ HEAD
   # the source starts with <title>…; everything before <style> belongs in the head
   sed -i 's|^<style>|</head>\n<body>\n<style>|' "$2"
 }
-wrap "$SRC/index.html" index.html "Outerwear told in chapters: every jacket begins with a real place and the craft people built there to live with cold."
-wrap "$SRC/brand/brand-book.html" brand/brand-book.html "Brand book for YVER: name, trademark screening, logo, colour, type, label, photo brief and voice."
-cp "$SRC"/brand/*.svg brand/
-echo "built: index.html, brand/brand-book.html, $(ls brand/*.svg | wc -l) logo files"
+wrap "$SRC/index.html" public/index.html "Outerwear told in chapters: every jacket begins with a real place and the craft people built there to live with cold."
+wrap "$SRC/brand/brand-book.html" public/brand/brand-book.html "Brand book for YVER: name, trademark screening, logo, colour, type, label, photo brief and voice."
+cp "$SRC"/brand/*.svg public/brand/
+echo "built: index.html, brand/brand-book.html, $(ls public/brand/*.svg | wc -l) logo files"

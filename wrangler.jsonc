@@ -1,0 +1,8 @@
+{
+  // Static site on Cloudflare Workers: no server code, just the files in ./public
+  "name": "yver-site",
+  "compatibility_date": "2026-09-17",
+  "assets": {
+    "directory": "./public"
+  }
+}
