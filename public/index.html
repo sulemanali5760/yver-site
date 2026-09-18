@@ -91,36 +91,36 @@ header nav a:hover{text-decoration:underline;text-underline-offset:4px}
 /* opening scene: ring carousel of the chapter's pieces */
 .word{font:500 clamp(66px,11vw,190px)/.85 var(--serif);letter-spacing:.16em;margin:0;color:var(--cream)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.stagering{position:relative;height:100vh;height:100svh;min-height:calc(var(--w)*1.25 + 460px);overflow:hidden;outline:none;touch-action:pan-y;user-select:none;
+.stagering{position:relative;height:100vh;height:100svh;min-height:calc(var(--w)*1.2 + 380px);overflow:hidden;outline:none;touch-action:pan-y;user-select:none;
   background:radial-gradient(ellipse 70% 55% at 50% 78%,#3B3238 0%,#221B1D 38%,#0E0A08 72%),#0B0806;
-  --w:clamp(150px,19vw,290px)}
+  --w:clamp(140px,min(19vw,33vh),290px);--top:clamp(76px,12vh,120px)}
 .stagering::before{content:"";position:absolute;inset:88px 3vw 40px;pointer-events:none;
   background:linear-gradient(var(--dim),var(--dim)) top left/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) top left/1px 14px no-repeat,
   linear-gradient(var(--dim),var(--dim)) top right/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) top right/1px 14px no-repeat,
   linear-gradient(var(--dim),var(--dim)) bottom left/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) bottom left/1px 14px no-repeat,
   linear-gradient(var(--dim),var(--dim)) bottom right/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) bottom right/1px 14px no-repeat}
-.car-top{position:absolute;top:calc(92px + env(safe-area-inset-top,0px));left:0;right:0;display:flex;justify-content:space-between;gap:16px;z-index:3;pointer-events:none;padding-inline:calc(3vw + 24px)}
-.halo{position:absolute;left:50%;top:calc(120px + var(--w)*.62);width:calc(var(--w)*2.6);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+.car-top{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom,0px));left:0;right:0;align-items:flex-end;display:flex;justify-content:space-between;gap:16px;z-index:3;pointer-events:none;padding-inline:calc(3vw + 24px)}
+.halo{position:absolute;left:50%;top:calc(var(--top) + var(--w)*.62);width:calc(var(--w)*2.6);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
   background:radial-gradient(circle,var(--glow,rgb(232 195 138/.22)) 0%,transparent 62%);transition:background .6s;pointer-events:none}
-.ring{position:absolute;left:50%;top:calc(120px + var(--w)*.62);width:0;height:0;z-index:2}
+.ring{position:absolute;left:50%;top:calc(var(--top) + var(--w)*.62);width:0;height:0;z-index:2}
 .ring-item{position:absolute;width:var(--w);left:calc(var(--w)/-2);top:calc(var(--w)*-.55);padding:0;border:0;background:none;cursor:pointer;will-change:transform,filter;transform-origin:50% 60%}
 .ring-item .fig{filter:drop-shadow(0 26px 28px rgb(0 0 0/.55))}
 .ring-item:focus-visible{outline-offset:8px}
-.pedestal{position:absolute;left:50%;top:calc(120px + var(--w)*1.12);width:calc(var(--w)*1.55);height:calc(var(--w)*.3);transform:translateX(-50%);border-radius:50%;z-index:1;
+.pedestal{position:absolute;left:50%;top:calc(var(--top) + var(--w)*1.12);width:calc(var(--w)*1.55);height:calc(var(--w)*.3);transform:translateX(-50%);border-radius:50%;z-index:1;
   background:radial-gradient(ellipse at 50% 35%,#6F666E 0%,#3A3237 30%,#171214 62%,#0B0808 78%);
   box-shadow:inset 0 0 0 2px rgb(241 230 214/.14),inset 0 -8px 18px rgb(0 0 0/.6),0 30px 60px rgb(0 0 0/.7)}
 .pedestal i{position:absolute;inset:14% 12% 34%;border-radius:50%;border:1px solid rgb(241 230 214/.22);box-shadow:0 0 0 6px rgb(0 0 0/.18)}
-.car-arrow{position:absolute;top:calc(120px + var(--w)*.55 - 32px);z-index:3;width:44px;height:64px;border:0;background:none;padding:8px;opacity:.75;transition:opacity .2s,transform .2s}
+.car-arrow{position:absolute;top:calc(var(--top) + var(--w)*.55 - 32px);z-index:3;width:44px;height:64px;border:0;background:none;padding:8px;opacity:.75;transition:opacity .2s,transform .2s}
 .car-arrow:hover{opacity:1}
 .car-arrow svg{width:100%;height:100%;fill:none;stroke:var(--cream);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.1 5.5}
 .car-arrow.prev{left:calc(50% - var(--w)*.95 - 44px)}.car-arrow.next{left:calc(50% + var(--w)*.95)}
 .car-arrow.prev:hover{transform:translateX(-4px)}.car-arrow.next:hover{transform:translateX(4px)}
-.car-bottom{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:18px;z-index:3;padding-inline:16px}
+.car-bottom{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2.2vh,18px);z-index:3;padding-inline:16px}
 .car-info{width:min(92vw,760px);text-align:center;transition:opacity .25s,transform .25s}
 .car-info.swap{opacity:0;transform:translateY(8px)}
 .car-cat{margin:0 0 6px;color:var(--handle)}
-.car-name{margin:0;font:800 clamp(28px,4.4vw,64px)/.95 var(--display);letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;text-shadow:0 6px 30px rgb(0 0 0/.6)}
-.car-meta{margin:12px 0 16px;color:var(--soft);font:500 13px var(--mono);letter-spacing:.04em}
+.car-name{margin:0;font:800 clamp(26px,min(4.4vw,6.4vh),64px)/.95 var(--display);letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;text-shadow:0 6px 30px rgb(0 0 0/.6)}
+.car-meta{margin:clamp(6px,1.4vh,12px) 0 clamp(10px,2vh,16px);color:var(--soft);font:500 13px var(--mono);letter-spacing:.04em}
 .car-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .car-track{position:relative;width:min(560px,72vw);height:14px;cursor:pointer;flex:none}
 .car-track::before{content:"";position:absolute;left:0;right:0;top:6px;height:3px;border-radius:3px;background:linear-gradient(90deg,#E8C38A,#8FE9C0 35%,#B9A6FF 68%,#F08A3C)}
@@ -825,7 +825,7 @@ function carInfo(i){
 }
 function layoutCar(t){
   if (!carDrag) carPos += (carTarget - carPos) * (calm ? 1 : .08);
-  const RX = Math.min(innerWidth * .5, 760), RY = RX * .3;
+  const RX = Math.min(innerWidth * .5, 760), RY = Math.min(RX * .3, innerHeight * .1);
   ringItems.forEach((el, i) => {
     const th = Math.atan2(Math.sin((i - carPos) * STEP), Math.cos((i - carPos) * STEP));   // -π..π, 0 = front
     const e = Math.abs(Math.sin(th / 2));                                            // 0 front → 1 wrapping behind
