@@ -88,21 +88,50 @@ header nav a:hover{text-decoration:underline;text-underline-offset:4px}
 .menu-side a:hover,.menu-side button:hover{color:var(--handle)}
 @media (max-width:760px){.menu-body{grid-template-columns:1fr}}
 
-/* hero */
-.hero{position:relative;min-height:clamp(560px,92vh,900px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:var(--g);padding-block:calc(84px + env(safe-area-inset-top,0px)) 32px}
+/* opening scene: ring carousel of the chapter's pieces */
 .word{font:500 clamp(66px,11vw,190px)/.85 var(--serif);letter-spacing:.16em;margin:0;color:var(--cream)}
-.house-line{display:block;margin-top:14px;letter-spacing:.42em}
-.hero .side{display:flex;flex-direction:column;justify-content:space-between;gap:28px;position:relative;z-index:2}
-.hero .lede{margin:0;max-width:34ch}
-.hero .lede b{display:block;font:italic 500 clamp(26px,2.6vw,36px)/1.15 var(--serif);margin-bottom:12px;text-transform:none;letter-spacing:0}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:10px}
-.stage{position:relative;border-radius:18px;overflow:hidden;display:grid;place-items:center;min-height:420px;perspective:900px;box-shadow:inset 0 0 0 1px rgb(0 0 0/.25),0 30px 80px rgb(0 0 0/.5)}
-.stage::after{content:"";position:absolute;inset:14px;border:1px dashed rgb(241 230 214/.18);border-radius:10px;pointer-events:none}
-.tilt{width:min(62%,380px);transform:rotateX(var(--rx,0deg)) rotateY(calc(var(--ry,0deg) + var(--sy,0deg)));transition:transform .25s ease-out;position:relative}
-.tilt .bp{position:absolute;left:-10%;top:-4.545%;width:120%;height:109.09%;opacity:.8} /* viewBox -20 -10 240 240 over the 200×220 jacket */
-.stage .tag{position:absolute;font:500 12px var(--mono);color:var(--cream);opacity:.85}
-.t1{top:26px;right:28px;text-align:right}.t2{top:46px;right:28px;text-align:right}.t3{bottom:24px;left:28px}.t4{bottom:24px;right:28px}
-@media (max-width:760px){.hero{grid-template-columns:1fr}.stage{min-height:360px}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.stagering{position:relative;height:100vh;height:100svh;min-height:calc(var(--w)*1.25 + 460px);overflow:hidden;outline:none;touch-action:pan-y;user-select:none;
+  background:radial-gradient(ellipse 70% 55% at 50% 78%,#3B3238 0%,#221B1D 38%,#0E0A08 72%),#0B0806;
+  --w:clamp(150px,19vw,290px)}
+.stagering::before{content:"";position:absolute;inset:88px 3vw 40px;pointer-events:none;
+  background:linear-gradient(var(--dim),var(--dim)) top left/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) top left/1px 14px no-repeat,
+  linear-gradient(var(--dim),var(--dim)) top right/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) top right/1px 14px no-repeat,
+  linear-gradient(var(--dim),var(--dim)) bottom left/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) bottom left/1px 14px no-repeat,
+  linear-gradient(var(--dim),var(--dim)) bottom right/14px 1px no-repeat,linear-gradient(var(--dim),var(--dim)) bottom right/1px 14px no-repeat}
+.car-top{position:absolute;top:calc(92px + env(safe-area-inset-top,0px));left:0;right:0;display:flex;justify-content:space-between;gap:16px;z-index:3;pointer-events:none;padding-inline:calc(3vw + 24px)}
+.halo{position:absolute;left:50%;top:calc(120px + var(--w)*.62);width:calc(var(--w)*2.6);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,var(--glow,rgb(232 195 138/.22)) 0%,transparent 62%);transition:background .6s;pointer-events:none}
+.ring{position:absolute;left:50%;top:calc(120px + var(--w)*.62);width:0;height:0;z-index:2}
+.ring-item{position:absolute;width:var(--w);left:calc(var(--w)/-2);top:calc(var(--w)*-.55);padding:0;border:0;background:none;cursor:pointer;will-change:transform,filter;transform-origin:50% 60%}
+.ring-item .fig{filter:drop-shadow(0 26px 28px rgb(0 0 0/.55))}
+.ring-item:focus-visible{outline-offset:8px}
+.pedestal{position:absolute;left:50%;top:calc(120px + var(--w)*1.12);width:calc(var(--w)*1.55);height:calc(var(--w)*.3);transform:translateX(-50%);border-radius:50%;z-index:1;
+  background:radial-gradient(ellipse at 50% 35%,#6F666E 0%,#3A3237 30%,#171214 62%,#0B0808 78%);
+  box-shadow:inset 0 0 0 2px rgb(241 230 214/.14),inset 0 -8px 18px rgb(0 0 0/.6),0 30px 60px rgb(0 0 0/.7)}
+.pedestal i{position:absolute;inset:14% 12% 34%;border-radius:50%;border:1px solid rgb(241 230 214/.22);box-shadow:0 0 0 6px rgb(0 0 0/.18)}
+.car-arrow{position:absolute;top:calc(120px + var(--w)*.55 - 32px);z-index:3;width:44px;height:64px;border:0;background:none;padding:8px;opacity:.75;transition:opacity .2s,transform .2s}
+.car-arrow:hover{opacity:1}
+.car-arrow svg{width:100%;height:100%;fill:none;stroke:var(--cream);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.1 5.5}
+.car-arrow.prev{left:calc(50% - var(--w)*.95 - 44px)}.car-arrow.next{left:calc(50% + var(--w)*.95)}
+.car-arrow.prev:hover{transform:translateX(-4px)}.car-arrow.next:hover{transform:translateX(4px)}
+.car-bottom{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:18px;z-index:3;padding-inline:16px}
+.car-info{width:min(92vw,760px);text-align:center;transition:opacity .25s,transform .25s}
+.car-info.swap{opacity:0;transform:translateY(8px)}
+.car-cat{margin:0 0 6px;color:var(--handle)}
+.car-name{margin:0;font:800 clamp(28px,4.4vw,64px)/.95 var(--display);letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;text-shadow:0 6px 30px rgb(0 0 0/.6)}
+.car-meta{margin:12px 0 16px;color:var(--soft);font:500 13px var(--mono);letter-spacing:.04em}
+.car-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.car-track{position:relative;width:min(560px,72vw);height:14px;cursor:pointer;flex:none}
+.car-track::before{content:"";position:absolute;left:0;right:0;top:6px;height:3px;border-radius:3px;background:linear-gradient(90deg,#E8C38A,#8FE9C0 35%,#B9A6FF 68%,#F08A3C)}
+.car-dot{position:absolute;top:7px;left:var(--p,0%);width:16px;height:16px;border-radius:50%;background:var(--cream);box-shadow:0 0 0 5px rgb(241 230 214/.18);transform:translate(-50%,-50%);transition:left .6s cubic-bezier(.3,1.2,.4,1)}
+.car-scroll{text-decoration:none;white-space:nowrap}
+@media (max-width:760px){
+  .stagering{--w:clamp(150px,42vw,220px)}
+  .car-arrow.prev{left:8px}.car-arrow.next{left:auto;right:8px}
+  .car-top{display:none}
+}
+@media (prefers-reduced-motion:reduce){.car-dot,.car-info,.halo{transition:none}}
 
 /* jacket drawing (shared) */
 .fig{filter:drop-shadow(0 22px 24px rgb(0 0 0/.45))}
@@ -337,19 +366,27 @@ th{color:var(--muted);font-weight:500}
 </dialog>
 
 <main id="top">
-  <section class="hero pad">
-    <div class="side">
-      <div><h1 class="word">YVER</h1><span class="cap muted house-line">Chapters of the World</span></div>
-      <p class="lede cap muted"><b>Garments that carry a place.</b>Each chapter starts with a real place and the craft people built there to live with cold. Six chapters, a few pieces each, released by request.</p>
-      <div class="ctas"><a class="btn" href="#/atlas">Enter the Atlas →</a><a class="btn ghost" href="#/story/skrei">Read chapter I</a></div>
-      <p class="cap muted">Chapter I · Skrei · Lofoten<br>Open for requests</p>
+  <!-- opening scene: the six pieces of chapter I float on a ring; the front one takes the pedestal -->
+  <section class="stagering" id="carousel" aria-roledescription="carousel" aria-label="Chapter I, Skrei: six pieces" tabindex="0">
+    <h1 class="sr-only">YVER, Chapters of the World</h1>
+    <div class="car-top pad">
+      <span class="cap muted">Chapter I · Skrei<br><span class="mono">68°12′N 13°36′E</span></span>
+      <span class="cap muted" style="text-align:right">Six pieces<br>Released by request</span>
     </div>
-    <div class="stage grid-bg" id="stage">
-      <div class="tilt" id="tilt"></div>
-      <span class="tag t1">CHAPTER I / SKREI</span>
-      <span class="tag t2">68°12′N 13°36′E</span>
-      <span class="tag t3">HJELL PARKA · SCALE 1:4</span>
-      <span class="tag t4">SCROLL ↓</span>
+    <div class="halo" aria-hidden="true"></div>
+    <div class="ring" id="ring"></div>
+    <div class="pedestal" aria-hidden="true"><i></i></div>
+    <button class="car-arrow prev" id="carPrev" type="button" aria-label="Previous piece"><svg viewBox="0 0 24 48" aria-hidden="true"><path d="M18 4 L6 24 L18 44"/></svg></button>
+    <button class="car-arrow next" id="carNext" type="button" aria-label="Next piece"><svg viewBox="0 0 24 48" aria-hidden="true"><path d="M6 4 L18 24 L6 44"/></svg></button>
+    <div class="car-bottom">
+    <div class="car-info" id="carInfo" aria-live="polite">
+      <p class="cap car-cat" id="carCat"></p>
+      <h2 class="car-name" id="carName"></h2>
+      <p class="car-meta" id="carMeta"></p>
+      <div class="car-ctas"><a class="btn" id="carView" href="#/piece/sk-hjell">View piece</a><a class="btn ghost" href="#/story/skrei">The story</a></div>
+    </div>
+    <div class="car-track" id="carTrack" role="group" aria-label="Choose a piece"><span class="car-dot" id="carDot"></span></div>
+    <a class="cap muted car-scroll" href="#house">Scroll to discover</a>
     </div>
   </section>
 
@@ -550,6 +587,7 @@ const dms = v => { const m = Math.round(Math.abs(v) * 60); return `${Math.floor(
 const coord = (lat, lon) => `${dms(lat)}${lat >= 0 ? "N" : "S"} ${dms(lon)}${lon >= 0 ? "E" : "W"}`;
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const wrap = a => ((a + 540) % 360) - 180;
+const priceText = p => p.price ? eur(p.price) : "Price on request";
 
 // monogram (see brand/yver-monogram-dark.svg): chain-stitched Y inside a globe ring, orange knot and north tick
 document.querySelectorAll(".mark").forEach(s => s.innerHTML = `
@@ -696,21 +734,6 @@ function jacket(p, anim, cls = ""){
   <svg viewBox="0 0 200 220" aria-hidden="true">${g.details}${p.motif ? motif(p, anim) : ""}</svg></div></div>`;
 }
 
-// blueprint: dashed outline + orange bezier handles over the hero jacket
-const HERO = PIECES.find(p => p.id === "sk-hjell");
-function blueprint(){
-  const d = GEO[HERO.shape].d;
-  const pts = d.match(/[MLQC][^MLQCZ]*/g).map(seg => seg.slice(1).trim().split(/[\s,]+/).slice(-2).map(Number));
-  const h = pts.map(([x,y], i) => {
-    const [dx,dy] = i % 3 === 0 ? [14,0] : [0,14];
-    return `<line x1="${x-dx}" y1="${y-dy}" x2="${x+dx}" y2="${y+dy}" stroke="#F08A3C" stroke-width="1.2"/>
-      <circle cx="${x-dx}" cy="${y-dy}" r="2" fill="#F08A3C"/><circle cx="${x+dx}" cy="${y+dy}" r="2" fill="#F08A3C"/>
-      <rect x="${x-2.5}" y="${y-2.5}" width="5" height="5" fill="#120D0A" stroke="#F08A3C"/>`;
-  }).join("");
-  return `<g stroke="rgb(241 230 214/.12)"><line x1="-20" y1="110" x2="220" y2="110"/><line x1="100" y1="-10" x2="100" y2="230"/></g>
-    <path d="${d}" fill="none" stroke="#F1E6D6" stroke-width="1.2" stroke-dasharray="2 3"/>${h}`;
-}
-
 // digits left of k·length are locked to `text`, the rest roll
 const scramble = (text, k) => [...text].map((ch, i) => /\d/.test(ch) && i >= k * text.length ? String(Math.random() * 10 | 0) : ch).join("");
 const ease = f => f * f * (3 - 2 * f);
@@ -775,13 +798,92 @@ function veilTo(label, place, apply){
   };
 }
 
-/* ================= home ================= */
-$("#tilt").innerHTML = jacket(HERO, true) + `<svg class="bp" viewBox="-20 -10 240 240" aria-hidden="true">${blueprint()}</svg>`;
-if (!calm) $("#stage").addEventListener("pointermove", e => {
-  const r = e.currentTarget.getBoundingClientRect();
-  $("#tilt").style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 24 + "deg");
-  $("#tilt").style.setProperty("--rx", ((e.clientY - r.top) / r.height - .5) * -18 + "deg");
+/* ================= home: opening carousel ================= */
+// The chapter's pieces sit on a ring seen from slightly above: the front piece is low, large and lit,
+// the far ones smaller, darker and higher. Arrows, drag, keys, the track or a click turn the ring.
+const CAR = PIECES, N = CAR.length, STEP = 2 * Math.PI / N;   // ponytail: 6 fixed pieces; a longer list would want a flat strip
+const TILT = [-8, 6, -5, 9, -6, 5];
+const mod = (n, m) => ((n % m) + m) % m;
+const carEl = $("#carousel"), ring = $("#ring");
+ring.innerHTML = CAR.map((p, i) => `<button class="ring-item" type="button" data-i="${i}" aria-label="${p.name}, ${priceText(p)}">${jacket(p)}</button>`).join("");
+const ringItems = [...ring.children];
+let carPos = 1, carTarget = 1, carActive = -1, carVisible = true, carDrag = null, carMoved = false, carHover = false, carTouched = 0;
+
+function carInfo(i){
+  const p = CAR[i], info = $("#carInfo");
+  info.classList.add("swap");
+  setTimeout(() => {
+    $("#carCat").textContent = `${p.cat} · ${p.ed}`;
+    $("#carName").textContent = p.name;
+    $("#carMeta").textContent = `${p.mat} · ${priceText(p)}`;
+    $("#carView").href = `#/piece/${p.id}`;
+    info.classList.remove("swap");
+  }, calm ? 0 : 180);
+  $("#carDot").style.setProperty("--p", (i / (N - 1) * 100) + "%");
+  carEl.style.setProperty("--glow", (p.mc || p.c1) + "40");
+  ringItems.forEach((el, k) => el.setAttribute("aria-current", k === i));
+}
+function layoutCar(t){
+  if (!carDrag) carPos += (carTarget - carPos) * (calm ? 1 : .08);
+  const RX = Math.min(innerWidth * .5, 760), RY = RX * .3;
+  ringItems.forEach((el, i) => {
+    const th = Math.atan2(Math.sin((i - carPos) * STEP), Math.cos((i - carPos) * STEP));   // -π..π, 0 = front
+    const e = Math.abs(Math.sin(th / 2));                                            // 0 front → 1 wrapping behind
+    const x = Math.sin(th / 2) * RX * 1.1;
+    const y = -e * e * RY + (calm ? 0 : Math.sin(t / 900 + i * 1.3) * 7);          // arc rises to the edges, gentle float
+    const s = 1 - .36 * e;
+    const fade = clamp((Math.PI - Math.abs(th)) / (Math.PI / 5), 0, 1);             // hide the jump at the back
+    el.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${s.toFixed(3)}) rotate(${(TILT[i] * e).toFixed(2)}deg)`;
+    el.style.filter = `brightness(${(1 - .62 * e).toFixed(3)}) saturate(${(1 - .4 * e).toFixed(2)})`;
+    el.style.opacity = fade.toFixed(3);
+    el.style.zIndex = Math.round(100 - e * 90);
+  });
+  const a = mod(Math.round(carTarget), N);
+  if (a !== carActive) { carActive = a; carInfo(a); }
+}
+const carGo = d => { carTarget = Math.round(carTarget) + d; carTouched = Date.now(); };
+const carGoTo = i => carGo(mod(i - mod(Math.round(carTarget), N) + N / 2, N) - N / 2);   // shortest way round
+$("#carPrev").onclick = () => carGo(-1);
+$("#carNext").onclick = () => carGo(1);
+carEl.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") { carGo(-1); e.preventDefault(); }
+  if (e.key === "ArrowRight") { carGo(1); e.preventDefault(); }
 });
+ring.addEventListener("click", e => {
+  const b = e.target.closest(".ring-item"); if (!b || carMoved) return;
+  const i = +b.dataset.i;
+  i === carActive ? location.hash = `#/piece/${CAR[i].id}` : carGoTo(i);   // front piece opens, others come forward
+});
+$("#carTrack").addEventListener("click", e => {
+  const r = e.currentTarget.getBoundingClientRect();
+  carGoTo(Math.round(clamp((e.clientX - r.left) / r.width, 0, 1) * (N - 1)));
+});
+// drag / swipe
+carEl.addEventListener("pointerdown", e => {
+  if (e.target.closest("a, .car-arrow, .car-track")) return;
+  carDrag = {x: e.clientX, start: carPos, id: e.pointerId}; carMoved = false;
+});
+carEl.addEventListener("pointermove", e => {
+  if (!carDrag) return;
+  const dx = e.clientX - carDrag.x;
+  if (!carMoved && Math.abs(dx) > 6) { carMoved = true; carEl.setPointerCapture(carDrag.id); }
+  if (carMoved) carPos = carTarget = carDrag.start - dx / (Math.min(innerWidth * .5, 760) * .55);
+});
+const carRelease = () => {
+  if (!carDrag) return;
+  carDrag = null; carTarget = Math.round(carPos); carTouched = Date.now();
+  setTimeout(() => carMoved = false, 0);            // let the click that follows a drag be ignored
+};
+carEl.addEventListener("pointerup", carRelease);
+carEl.addEventListener("pointercancel", carRelease);
+carEl.addEventListener("pointerenter", () => carHover = true);
+carEl.addEventListener("pointerleave", () => carHover = false);
+// the ring turns on its own every 6 s while nobody is touching it
+setInterval(() => {
+  if (view === "home" && carVisible && !carHover && !carDrag && !calm && !document.hidden && Date.now() - carTouched > 9000) carGo(1), carTouched = 0;
+}, 6000);
+layoutCar(performance.now());
+
 const line = $("#line");
 line.innerHTML = line.textContent.split(" ").map(w => `<span>${w}</span>`).join(" ");
 const words = [...line.children];
@@ -790,12 +892,13 @@ function light(){
   const k = Math.min(1, Math.max(0, (innerHeight * .85 - r.top) / (r.height + innerHeight * .35)));
   words.forEach((w, i) => w.classList.toggle("on", i < k * words.length + .5));
 }
-const heroEl = $(".hero");
-const turn = () => { if (!calm) $("#tilt").style.setProperty("--sy", Math.min(1, scrollY / heroEl.offsetHeight) * 50 + "deg"); };
-addEventListener("scroll", () => { if (view === "home") { light(); turn(); } }, {passive:true});
+addEventListener("scroll", () => { if (view === "home") light(); }, {passive:true});
 light();
-const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("paused", !e.isIntersecting)));
-io.observe(heroEl);
+const io = new IntersectionObserver(es => es.forEach(e => {
+  e.target.classList.toggle("paused", !e.isIntersecting);
+  if (e.target === carEl) carVisible = e.isIntersecting;
+}));
+io.observe(carEl);
 
 // chapter links: open chapters go to their story, the rest to the Atlas with that chapter selected
 const chHref = c => c.open ? `#/story/${c.id}` : "#/atlas";
@@ -1132,7 +1235,6 @@ const beatIO = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll(".beat").forEach(b => beatIO.observe(b));
 
 /* ================= pieces ================= */
-const priceText = p => p.price ? eur(p.price) : "Price on request";
 $("#pieceGrid").innerHTML = PIECES.map(p => `<a class="piece" href="#/piece/${p.id}">
   ${jacket(p)}
   <span class="cat ${p.cat === "Archive" ? "hot" : ""}">${p.cat} · ${p.ed}</span>
@@ -1274,6 +1376,7 @@ let lastT = performance.now();
   const dt = Math.min(50, t - lastT); lastT = t;
   if (view === "atlas") drawAtlas(t);
   else if (view === "story") drawSea(t, dt);
+  else if (view === "home" && carVisible) layoutCar(t);
   requestAnimationFrame(frame);
 })(lastT);
 route();
