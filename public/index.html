@@ -13,6 +13,9 @@
 <title>YVER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&display=swap">
+<!-- three.js for the two WebGL scenes (orbit.js, vendor/temple-night.js); only fetched when one of them is opened.
+     Pinned to r149: Temple Night was written against it. -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"}}</script>
 </head>
 <body>
 <style>
@@ -20,6 +23,8 @@
 :root{
   --ground:#120D0A; --panel:#1B1511; --cream:#F1E6D6; --soft:#D9CFC1; --muted:#8C8074; --dim:#4A3F36;
   --mat:#46553A; --grid:rgb(241 230 214/.07); --handle:#F08A3C;
+  --glass:linear-gradient(150deg,rgb(241 230 214/.10),rgb(241 230 214/.03) 60%); --glass-line:rgb(241 230 214/.14);
+  --glass-blur:blur(20px) saturate(1.5); --glass-shadow:inset 0 1px 0 rgb(255 255 255/.10),0 24px 50px -24px rgb(0 0 0/.7);
   --g:clamp(16px,4vw,48px);
   --display:"Unbounded","Arial Black",system-ui,sans-serif;
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -30,6 +35,11 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--ground);color:var(--cream);font:15px/1.55 var(--body)}
+/* ambient light: slow brand-coloured glows behind everything, so the frosted panels have something to frost */
+body::before{content:"";position:fixed;inset:-15%;z-index:-1;pointer-events:none;
+  background:radial-gradient(32% 28% at 18% 22%,rgb(240 138 60/.22),transparent 70%),radial-gradient(30% 34% at 84% 30%,rgb(70 85 58/.42),transparent 70%),
+    radial-gradient(38% 32% at 62% 82%,rgb(185 166 255/.15),transparent 70%),radial-gradient(26% 24% at 12% 78%,rgb(143 233 192/.08),transparent 70%);
+}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 .pad{padding-inline:var(--g)}
 .cap{font:500 12px/1.5 var(--body);letter-spacing:.14em;text-transform:uppercase}
@@ -39,7 +49,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:2px dashed var(--handle);outline-offset:3px}
 .grid-bg{background-color:var(--mat);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
 .btn{display:inline-block;border:0;border-radius:999px;padding:12px 22px;background:var(--cream);color:var(--ground);font-weight:700;text-decoration:none}
-.btn.ghost{background:none;color:var(--cream);box-shadow:inset 0 0 0 1px var(--dim)}
+.btn.ghost{color:var(--cream)}
 .btn.ghost:hover{background:var(--cream);color:var(--ground)}
 .back{color:var(--muted);text-decoration:none}
 .back:hover{color:var(--cream)}
@@ -66,16 +76,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 #veil .mono{font-size:clamp(18px,2.4vw,26px);font-variant-numeric:tabular-nums}
 
 /* header + menu */
-header{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) var(--g) 18px;mix-blend-mode:difference}
+header{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:9px 10px 9px 18px;border-radius:999px;
+  background:rgb(18 13 10/.55);border:1px solid var(--glass-line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:var(--glass-shadow)}
 .logo{display:inline-flex;align-items:center;gap:10px;font:500 22px/1 var(--serif);letter-spacing:.34em;color:var(--cream);text-decoration:none}
 .mark{width:28px;height:28px;flex:none}
 header nav{display:flex;align-items:center;gap:22px}
 header nav a{color:var(--cream);text-decoration:none}
 header nav a:hover{text-decoration:underline;text-underline-offset:4px}
-.menu-btn{background:none;border:1px solid var(--cream);border-radius:999px;padding:6px 16px}
+.menu-btn{border-radius:999px;padding:6px 16px}
 @media (max-width:560px){header nav a{display:none}.logo{font-size:19px;letter-spacing:.26em}}
-#menu{width:100%;max-width:none;height:100%;max-height:none;margin:0;border:0;border-radius:0;background:var(--ground);padding:calc(18px + env(safe-area-inset-top,0px)) var(--g) calc(32px + env(safe-area-inset-bottom,0px))}
-#menu::backdrop{background:var(--ground)}
+#menu{width:100%;max-width:none;height:100%;max-height:none;margin:0;border:0;border-radius:0;padding:calc(18px + env(safe-area-inset-top,0px)) var(--g) calc(32px + env(safe-area-inset-bottom,0px))}
+#menu::backdrop{background:transparent}
 .menu-top{display:flex;justify-content:space-between;align-items:center}
 .menu-body{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--g);margin-top:clamp(32px,6vh,72px)}
 .menu-ch{list-style:none;margin:0;padding:0}
@@ -107,16 +118,16 @@ header nav a:hover{text-decoration:underline;text-underline-offset:4px}
 .ring-item .fig{filter:drop-shadow(0 26px 28px rgb(0 0 0/.55))}
 .ring-item:focus-visible{outline-offset:8px}
 .pedestal{position:absolute;left:50%;top:calc(var(--top) + var(--w)*1.12);width:calc(var(--w)*1.55);height:calc(var(--w)*.3);transform:translateX(-50%);border-radius:50%;z-index:1;
-  background:radial-gradient(ellipse at 50% 35%,#6F666E 0%,#3A3237 30%,#171214 62%,#0B0808 78%);
-  box-shadow:inset 0 0 0 2px rgb(241 230 214/.14),inset 0 -8px 18px rgb(0 0 0/.6),0 30px 60px rgb(0 0 0/.7)}
+  background:radial-gradient(ellipse at 50% 30%,rgb(241 230 214/.24),rgb(241 230 214/.07) 55%,rgb(241 230 214/.02) 78%);
+  box-shadow:inset 0 0 0 1px rgb(241 230 214/.28),inset 0 10px 18px rgb(255 255 255/.07),inset 0 -10px 20px rgb(0 0 0/.35),0 30px 60px rgb(0 0 0/.65)}
 .pedestal i{position:absolute;inset:14% 12% 34%;border-radius:50%;border:1px solid rgb(241 230 214/.22);box-shadow:0 0 0 6px rgb(0 0 0/.18)}
-.car-arrow{position:absolute;top:calc(var(--top) + var(--w)*.55 - 32px);z-index:3;width:44px;height:64px;border:0;background:none;padding:8px;opacity:.75;transition:opacity .2s,transform .2s}
+.car-arrow{position:absolute;top:calc(var(--top) + var(--w)*.55 - 26px);z-index:3;width:52px;height:52px;border-radius:50%;padding:15px 17px;opacity:.85;transition:opacity .2s,transform .2s}
 .car-arrow:hover{opacity:1}
-.car-arrow svg{width:100%;height:100%;fill:none;stroke:var(--cream);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.1 5.5}
-.car-arrow.prev{left:calc(50% - var(--w)*.95 - 44px)}.car-arrow.next{left:calc(50% + var(--w)*.95)}
+.car-arrow svg{width:100%;height:100%;fill:none;stroke:var(--cream);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.car-arrow.prev{left:calc(50% - var(--w)*.95 - 52px)}.car-arrow.next{left:calc(50% + var(--w)*.95)}
 .car-arrow.prev:hover{transform:translateX(-4px)}.car-arrow.next:hover{transform:translateX(4px)}
 .car-bottom{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2.2vh,18px);z-index:3;padding-inline:16px}
-.car-info{width:min(92vw,760px);text-align:center;transition:opacity .25s,transform .25s}
+.car-info{width:min(92vw,700px);text-align:center;padding:18px 24px 22px;border-radius:26px;transition:opacity .25s,transform .25s}
 .car-info.swap{opacity:0;transform:translateY(8px)}
 .car-cat{margin:0 0 6px;color:var(--handle)}
 .car-name{margin:0;font:800 clamp(26px,min(4.4vw,6.4vh),64px)/.95 var(--display);letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;text-shadow:0 6px 30px rgb(0 0 0/.6)}
@@ -157,8 +168,8 @@ header nav a:hover{text-decoration:underline;text-underline-offset:4px}
 .statement>.cap{margin-top:28px;display:block}
 .house{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:var(--g);margin-top:clamp(56px,8vw,110px);align-items:start}
 .house p{margin:0 0 16px;font-size:17px;line-height:1.65;max-width:52ch}
-.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--dim);border:1px solid var(--dim);border-radius:14px;overflow:hidden;margin:0}
-.facts div{background:var(--ground);padding:18px}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0}
+.facts div{padding:18px;border-radius:14px}
 .facts dd{margin:6px 0 0;font:700 clamp(28px,3.4vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
 @media (max-width:760px){.house{grid-template-columns:1fr}}
 .section{padding-block:clamp(56px,8vw,100px)}
@@ -168,8 +179,8 @@ header nav a:hover{text-decoration:underline;text-underline-offset:4px}
 .ch-card:hover{border-color:var(--handle)}
 .ch-card .top{display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:10px}
 .ch-card b{font:700 22px/1.15 var(--display)}
-.alloc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--dim);border:1px solid var(--dim);border-radius:16px;overflow:hidden}
-.alloc div{background:var(--ground);padding:22px}
+.alloc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.alloc div{padding:22px;border-radius:16px}
 .alloc h3{font:700 16px var(--display);margin:10px 0 6px}
 .alloc p{margin:0;color:var(--muted);font-size:14px}
 
@@ -182,14 +193,14 @@ footer .mark{display:block;width:72px;height:72px;margin:0 auto 24px}
 .legal-links button{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--muted)}
 .legal-links button:hover{color:var(--cream);text-decoration:underline;text-underline-offset:3px}
 dialog{background:var(--panel);color:var(--cream);border:1px solid var(--dim);border-radius:16px;padding:24px;width:min(640px,calc(100% - 32px));max-height:min(80vh,720px)}
-dialog::backdrop{background:rgb(0 0 0/.6)}
+dialog::backdrop{background:rgb(0 0 0/.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .dlg-head{display:flex;justify-content:space-between;align-items:start;gap:16px;margin-bottom:12px}
 .dlg-head h2{font:700 22px/1.2 var(--display);margin:0}
 dialog h3{font:700 13px var(--body);text-transform:uppercase;letter-spacing:.1em;margin:20px 0 6px;color:var(--muted)}
 dialog p{margin:0 0 6px;max-width:62ch}
 .req form{display:grid;gap:14px}
 .req label{display:grid;gap:6px;font:500 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.req input,.req select,.req textarea,.pv select{width:100%;background:var(--ground);border:1px solid var(--dim);border-radius:10px;padding:11px 14px;color:var(--cream);font:15px var(--body)}
+.req input,.req select,.req textarea,.pv select{width:100%;background:rgb(18 13 10/.45);border:1px solid var(--glass-line);border-radius:10px;padding:11px 14px;color:var(--cream);font:15px var(--body)}
 .req textarea{min-height:90px;resize:vertical}
 dialog.drawer{inset:0 0 0 auto;margin:0;width:min(480px,100%);max-width:none;height:100%;max-height:none;border-radius:0;border-width:0 0 0 1px;padding:calc(24px + env(safe-area-inset-top,0px)) 24px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto}
 dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
@@ -226,7 +237,7 @@ dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
 .chap b{font:700 17px/1.2 var(--display)}
 .chap .meta{grid-column:2 / -1}
 .chapters .btn{align-self:flex-end}
-.pin-card{position:absolute;left:14px;right:14px;bottom:14px;background:rgb(27 21 17/.95);border:1px solid var(--dim);border-radius:14px;padding:16px 48px 16px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 14px;align-items:center;animation:rise .3s ease-out}
+.pin-card{position:absolute;left:14px;right:14px;bottom:14px;border-radius:14px;padding:16px 48px 16px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 14px;align-items:center;animation:rise .3s ease-out}
 .pin-card .roman{font-size:40px}
 .pin-card div{display:grid;gap:2px}
 .pin-card b{font:700 20px/1.15 var(--display)}
@@ -241,7 +252,7 @@ dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
 .tale-scene canvas{width:100%;height:100%;display:block}
 .scene-cap{position:absolute;left:var(--g);bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 .scene-coord{position:absolute;left:var(--g);top:calc(80px + env(safe-area-inset-top,0px));color:var(--muted)}
-.scene-cap,.scene-coord{background:rgb(7 10 18/.7);padding:4px 8px;border-radius:6px}
+.scene-cap,.scene-coord{padding:5px 10px;border-radius:999px}
 .beats{padding-inline:var(--g)}
 .beat{min-height:100vh;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-block:120px;max-width:580px}
 .beat .roman{font-size:64px}
@@ -262,7 +273,7 @@ dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
 .pieces-head p{margin:10px 0 28px;max-width:48ch;color:var(--soft)}
 .piece-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
 .piece{background:var(--panel);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:10px;color:var(--cream);text-decoration:none;border:1px solid transparent;transition:border-color .2s}
-.piece:hover{border-color:var(--dim)}
+.piece:hover{border-color:rgb(241 230 214/.32)}
 .piece .fig{padding:6% 12%;background:radial-gradient(circle at 50% 42%,#2A241D,transparent 70%);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
 .piece:hover .fig{transform:translateY(-4px) rotate(-1.5deg)}
 .cat{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -271,16 +282,59 @@ dialog.drawer[open]{animation:slide .35s cubic-bezier(.2,.8,.2,1)}
 .piece b{font:700 16px/1.25 var(--display)}
 .price{font:500 13px var(--mono);white-space:nowrap}
 .piece .more{margin-top:auto;color:var(--handle)}
+/* pieces in orbit: WebGL ring of sculpted tiles (orbit.js), with a dock below */
+.orbit{position:relative;height:clamp(520px,82vh,820px);margin-bottom:40px;border-radius:18px;overflow:hidden;border:1px solid var(--dim);
+  background:radial-gradient(ellipse 70% 55% at 50% 74%,#3B3238 0%,#221B1D 38%,#0E0A08 72%),#0B0806}
+.orbit canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;opacity:0;transition:opacity .8s;cursor:grab}
+.orbit.ready canvas{opacity:1}
+.orbit-status{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;transition:opacity .4s}
+.orbit.ready .orbit-status{opacity:0}
+.orbit-hint{position:absolute;left:20px;top:18px;pointer-events:none}
+.orbit-card{position:absolute;left:clamp(16px,4vw,48px);top:50%;transform:translateY(-50%);width:min(380px,38%);padding:22px 24px;border-radius:22px;display:grid;gap:10px;z-index:2;animation:rise .35s ease-out}
+.orbit-card b{font:800 clamp(24px,2.8vw,40px)/.98 var(--display);letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance;text-shadow:0 6px 30px rgb(0 0 0/.6)}
+.orbit-card p{margin:0;color:var(--soft);font-size:15px;line-height:1.6}
+.orbit-card .car-ctas{justify-content:flex-start;margin-top:6px}
+.dock{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:flex-end;gap:6px;padding:8px 10px;border-radius:22px;z-index:3;
+  background:rgb(241 230 214/.07);border:1px solid rgb(241 230 214/.14);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 20px 40px rgb(0 0 0/.45)}
+.dock button{position:relative;width:52px;height:52px;padding:5px;border:0;border-radius:12px;background:rgb(18 13 10/.55);box-shadow:inset 0 0 0 1px rgb(241 230 214/.08);
+  transform-origin:50% 100%;transform:translateY(calc((var(--s,1) - 1) * -12px)) scale(var(--s,1));margin-inline:calc((var(--s,1) - 1) * 22px);transition:transform .16s ease-out,margin .16s ease-out}
+.dock button .fig{filter:drop-shadow(0 3px 5px rgb(0 0 0/.5))}
+.dock button::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--handle);opacity:0;transition:opacity .2s}
+.dock button[aria-pressed="true"]::after{opacity:1}
+@media (max-width:760px){
+  .orbit{height:clamp(480px,72vh,620px)}
+  .orbit-card{top:16px;left:16px;right:16px;width:auto;transform:none}
+  .orbit-card p,.orbit-hint{display:none}
+  .dock{gap:4px;padding:6px 8px}.dock button{width:40px;height:40px;padding:4px}
+}
+@media (prefers-reduced-motion:reduce){.orbit-card{animation:none}.dock button{transition:none}}
 .partners{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--g);margin-top:64px;padding-top:32px;border-top:1px solid var(--dim)}
 .partners h3{font:700 18px var(--display);margin:0 0 12px}
 .partners p,.partners li{color:var(--soft);font-size:15px}
 .partners ul{margin:0;padding-left:18px;display:grid;gap:6px}
 
+/* chapter preview: Temple Night (ThreeUI, MIT) behind the chapter's opening lines */
+.teaser{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 70% 30%,#1A1F2E,#05070A 70%)}
+/* Temple Night: one canvas, moved between the home hero and the chapter preview (see startTemple) */
+.scene-host{position:absolute;inset:0;pointer-events:none}
+#temple{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s}
+#temple.ready{opacity:1}
+.hero-scene #temple.ready{opacity:1}
+.hero-shade{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 40% 34% at 50% 30%,rgb(11 8 6/.22),transparent 70%),linear-gradient(0deg,rgb(11 8 6/.7),transparent 42%),linear-gradient(180deg,rgb(11 8 6/.35),transparent 18%)}
+.teaser-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgb(5 7 10/.85),rgb(5 7 10/.4) 42%,transparent 66%),linear-gradient(0deg,rgb(5 7 10/.75),transparent 38%)}
+.teaser-copy{position:absolute;left:var(--g);bottom:calc(48px + env(safe-area-inset-bottom,0px));max-width:min(640px,calc(100% - 2 * var(--g)));padding:26px 30px 30px;border-radius:26px;display:flex;flex-direction:column;align-items:flex-start;gap:14px;pointer-events:none}
+.teaser-copy a{pointer-events:auto}
+.teaser-copy p{margin:0;font-size:17px;line-height:1.7;color:var(--soft);max-width:46ch}
+.teaser-credit{position:absolute;right:var(--g);bottom:calc(20px + env(safe-area-inset-bottom,0px));pointer-events:none;opacity:.7}
+
+@media (max-width:760px){.teaser-shade{background:linear-gradient(0deg,rgb(5 7 10/.92) 30%,rgb(5 7 10/.3) 65%,transparent)}.teaser-credit{display:none}}
+
 /* piece page */
 .pv{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:var(--g);align-items:start;margin-top:20px}
 .pv-stage{position:sticky;top:calc(80px + env(safe-area-inset-top,0px));border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;height:min(80vh,720px)}
 .pv-stage .seg{align-self:flex-end}
-.seg{display:inline-flex;border:1px solid rgb(241 230 214/.3);border-radius:999px;padding:4px;background:rgb(18 13 10/.4)}
+.seg{display:inline-flex;border-radius:999px;padding:4px}
 .seg button{border:0;background:none;border-radius:999px;padding:7px 16px;font:500 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--cream)}
 .seg button[aria-pressed="true"]{background:var(--cream);color:var(--ground)}
 .form{position:relative;height:calc(100% - 84px);aspect-ratio:200/400;max-width:100%;animation:bob 5s ease-in-out infinite}
@@ -314,6 +368,25 @@ th{color:var(--muted);font-weight:500}
   .pv-stage{position:relative;top:0;height:62vh}
 }
 .still,.paused *{animation-play-state:paused!important}
+
+/* glass: one surface for every panel, card, chip and secondary button. Real blur is costly (it is redone
+   whenever what's behind moves: every scroll frame, every frame of a scene), so only surfaces with detail
+   behind them blur; over the soft ambient light the tint alone looks the same */
+.glass,.ch-card,.piece,.chap,.alloc>div,.facts>div,.pin-card,dialog,.car-info,.car-arrow,.orbit-card,.teaser-copy,.btn.ghost,.menu-btn,.seg,.scene-cap,.scene-coord{
+  background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--glass-shadow)}
+dialog,.orbit-card,.teaser-copy,.pin-card{-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur)}
+.btn.ghost{border:0;box-shadow:inset 0 0 0 1px var(--glass-line),var(--glass-shadow)}
+.btn.ghost:hover,.menu-btn:hover{background:var(--cream);color:var(--ground)}
+.ch-card:hover{border-color:var(--handle)}
+.chap:hover{border-color:rgb(241 230 214/.3)}
+.chap[aria-current="true"]{border-color:var(--handle)}
+/* dialogs and the menu hold reading text: same glass, more tint */
+dialog{background:linear-gradient(150deg,rgb(44 36 31/.72),rgb(18 13 10/.66))}
+#menu{background:rgb(18 13 10/.6);-webkit-backdrop-filter:blur(28px) saturate(1.4);backdrop-filter:blur(28px) saturate(1.4);border:0;box-shadow:none}
+.pin-card,.orbit-card{background:linear-gradient(150deg,rgb(44 36 31/.5),rgb(18 13 10/.35))}
+.car-info{background:linear-gradient(150deg,rgb(52 42 36/.62),rgb(18 13 10/.55))}
+.car-arrow{background:rgb(18 13 10/.45)}
+
 @media (prefers-reduced-motion:reduce){.run,.form,.shadow,.draw,.slot .fig.land,.pin-card,dialog.drawer[open]{animation:none}.draw{stroke-dashoffset:0}}
 </style>
 
@@ -369,6 +442,8 @@ th{color:var(--muted);font-weight:500}
   <!-- opening scene: the six pieces of chapter I float on a ring; the front one takes the pedestal -->
   <section class="stagering" id="carousel" aria-roledescription="carousel" aria-label="Chapter I, Skrei: six pieces" tabindex="0">
     <h1 class="sr-only">YVER, Chapters of the World</h1>
+    <div class="scene-host hero-scene" id="heroScene" aria-hidden="true"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
     <div class="car-top pad">
       <span class="cap muted">Chapter I · Skrei<br><span class="mono">68°12′N 13°36′E</span></span>
       <span class="cap muted" style="text-align:right">Six pieces<br>Released by request</span>
@@ -491,6 +566,14 @@ th{color:var(--muted);font-weight:500}
       <h2 class="h-xl">Six pieces. All allocated.</h2>
       <p>Every piece in this chapter is released by request. Open a piece to see its provenance, sizing and care.</p>
     </div>
+    <!-- the six pieces in orbit; three.js loads when this scrolls near. Without WebGL it stays hidden and the grid carries on -->
+    <div class="orbit" id="orbit" aria-label="The six pieces in orbit. Use the dock to bring one forward.">
+      <canvas id="orbitCanvas" aria-hidden="true"></canvas>
+      <span class="mono muted orbit-status">Setting the pieces in orbit…</span>
+      <span class="cap muted orbit-hint">Drag to turn · select a piece</span>
+      <div class="orbit-card" id="orbitCard" aria-live="polite" hidden></div>
+      <div class="dock" id="dock" role="toolbar" aria-label="Bring a piece forward"></div>
+    </div>
     <div class="piece-grid" id="pieceGrid"></div>
     <div class="partners">
       <div>
@@ -508,6 +591,40 @@ th{color:var(--muted);font-weight:500}
       </div>
     </div>
     <p style="margin-top:40px"><a class="back cap" href="#/atlas">← Back to the Atlas</a></p>
+  </section>
+</main>
+
+<!-- chapter preview: a chapter in preparation gets its scene and opening lines before its pieces exist -->
+<main id="teaserView" hidden>
+  <section class="teaser" id="teaser">
+    <div class="scene-host" id="teaserScene"><canvas id="temple" aria-hidden="true"></canvas></div>
+    <div class="teaser-shade"></div>
+    <span class="mono scene-coord">39°42′N 141°09′E · Tōhoku</span>
+    <div class="teaser-copy">
+      <a class="back cap" href="#/atlas">← The Atlas</a>
+      <span class="cap muted">Chapter III · Tōhoku, Japan · <span class="pill">In preparation</span></span>
+      <h1 class="tale-title">Sashiko</h1>
+      <p>In Japan's cold north-east, cloth was scarce and had to last. Families layered worn cotton and hemp and stitched it together with rows of small running stitches to mend it and to hold in the warmth.</p>
+    </div>
+    <span class="cap muted teaser-credit">Scene: Temple Night · ThreeUI</span>
+  </section>
+  <section class="section pad">
+    <span class="cap muted">III — The craft</span>
+    <div class="house" style="margin-top:20px">
+      <div>
+        <p>Sashiko means “little stabs”. From the Edo period on, farming and fishing households in Tōhoku quilted layers of fabric together to make work clothes stronger and warmer, and kept mending them for as long as the cloth held.</p>
+        <p>In Aomori the same need produced two counted-thread forms, kogin-zashi in Tsugaru and hishizashi in the Nanbu region, both worked into hemp.</p>
+        <p>This chapter is in preparation. Its pieces, the people who make them and the story behind them will be published here when it opens.</p>
+        <p class="origin">Inspired by the sashiko of Tōhoku. Our pieces will be made by <span class="todo">[partner atelier — to be announced]</span>.</p>
+      </div>
+      <dl class="facts">
+        <div><dt class="cap muted">Pieces</dt><dd>6</dd></div>
+        <div><dt class="cap muted">From</dt><dd>€2.600</dd></div>
+        <div><dt class="cap muted">Craft</dt><dd style="font-size:clamp(18px,2vw,24px);line-height:1.15">Layered running stitch</dd></div>
+        <div><dt class="cap muted">Status</dt><dd style="font-size:clamp(18px,2vw,24px);line-height:1.15">In preparation</dd></div>
+      </dl>
+    </div>
+    <p style="margin-top:48px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#/story/skrei">Chapter I is open: Skrei →</a><a class="btn ghost" href="#/atlas">← The Atlas</a></p>
   </section>
 </main>
 
@@ -601,7 +718,7 @@ document.querySelectorAll(".mark").forEach(s => s.innerHTML = `
 const CHAPTERS = [
   {id:"skrei",  num:"I",   title:"Skrei",           place:"Lofoten, Norway",       lat:68.2,   lon:13.6,   craft:"Cod fishery · stockfish",   pieces:6, from:1450, open:true},
   {id:"harris", num:"II",  title:"Hebridean Weft",  place:"Isle of Harris, Scotland", lat:57.87, lon:-6.8,  craft:"Harris Tweed",              pieces:5, from:1900},
-  {id:"tohoku", num:"III", title:"Sashiko",         place:"Tōhoku, Japan",         lat:39.7,   lon:141.15, craft:"Layered running stitch",    pieces:6, from:2600},
+  {id:"tohoku", num:"III", title:"Sashiko",         place:"Tōhoku, Japan",         lat:39.7,   lon:141.15, craft:"Layered running stitch",    pieces:6, from:2600, preview:true},
   {id:"kochkor",num:"IV",  title:"Shyrdak",         place:"Kochkor, Kyrgyzstan",   lat:42.21,  lon:75.75,  craft:"Felt mosaic",               pieces:5, from:2200},
   {id:"cusco",  num:"V",   title:"Highland Loom",   place:"Chinchero, Peru",       lat:-13.39, lon:-72.05, craft:"Andean alpaca weaving",     pieces:5, from:2400},
   {id:"amami",  num:"VI",  title:"Mud & Silk",      place:"Amami Ōshima, Japan",   lat:28.38,  lon:129.49, craft:"Mud-dyed silk",             pieces:6, from:3200},
@@ -627,6 +744,10 @@ const PIECES = [
    line:"Named after one of Lofoten's oldest fishing villages. Heavy sherpa, horn buttons.",
    mat:"Heavy wool sherpa", lining:"Unlined", emb:"Chapter mark on the chest pocket", stitches:"—", hours:"—"},
 ];
+// how each piece is presented in the orbit: tile material and its tint
+const TILES = {"sk-archive":["metal","#8E949C"], "sk-hjell":["glass","#9CC3DA"], "sk-route":["ceramic","#D9CFC1"],
+  "sk-rorbu":["glass","#B9A6FF"], "sk-vestfjord":["metal","#A07E5C"], "sk-hamnoy":["ceramic","#2B2427"]};
+PIECES.forEach(p => [p.tile, p.tileTint] = TILES[p.id]);
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const LEN = {bomber:66, trucker:66, puffer:74, chore:78, parka:92, coat:100};   // back length in cm, size XS
 
@@ -732,6 +853,34 @@ function jacket(p, anim, cls = ""){
   const g = GEO[p.shape], zip = SHAPES[p.shape].close === "zip" ? " zip" : "";
   return `<div class="fig ${cls}"><div class="jacket tex-${p.tex}${zip}" style="--c1:${p.c1};--c2:${p.c2};--m:${g.mask}">
   <svg viewBox="0 0 200 220" aria-hidden="true">${g.details}${p.motif ? motif(p, anim) : ""}</svg></div></div>`;
+}
+
+// The same drawing as one standalone SVG, for the orbit's WebGL textures: the CSS mask becomes a clip path,
+// the CSS textures and shading become patterns and gradients (units are the 200×220 viewBox, ≈ px at ring size)
+const TEX = {
+  quilt: [45, -45].map((r, k) => `<pattern id="t${k}" width="17" height="17" patternUnits="userSpaceOnUse" patternTransform="rotate(${r})"><rect x="16" width="1" height="17" fill-opacity=".32"/></pattern>`).join(""),
+  cord: `<pattern id="t0" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="2" height="4" fill="#fff" fill-opacity=".14"/><rect x="2" width="2" height="4" fill-opacity=".2"/></pattern>`,
+  puff: `<linearGradient id="pg" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".32"/><stop offset=".46" stop-color="#fff" stop-opacity="0"/><stop offset=".875" stop-opacity=".22"/><stop offset=".96" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity=".32"/></linearGradient>` +
+        `<pattern id="t0" width="200" height="24" patternUnits="userSpaceOnUse"><rect width="200" height="24" fill="url(#pg)"/></pattern>`,
+  sherpa: `<pattern id="t0" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.4" fill="#fff" fill-opacity=".5"/>` +
+          [[0,0],[8,0],[0,8],[8,8]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#fff" fill-opacity=".32"/>`).join("") + `</pattern>`,
+  wool: `<pattern id="t0" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1" height="3" fill="#fff" fill-opacity=".07"/></pattern>`,
+};
+const stops = a => a.map(([o, c, op]) => `<stop offset="${o}" stop-color="${c}" stop-opacity="${op}"/>`).join("");
+function jacketSVG(p){
+  const g = GEO[p.shape], R = `x="-10" y="-10" width="220" height="240"`;
+  const dir = p.tex === "puff" ? `x1="0" y1=".25" x2="1" y2=".75"` : `x1=".33" y1="0" x2=".67" y2="1"`;   // 120° / 160°
+  const zip = SHAPES[p.shape].close === "zip";
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" width="200" height="220">
+  <style>.stitch{fill:none;stroke-width:2.4;stroke-dasharray:4 2.2;stroke-linecap:round}</style>
+  <defs><clipPath id="m"><path d="${g.d}"/></clipPath>
+    <linearGradient id="b" ${dir}><stop stop-color="${p.c1}"/><stop offset="1" stop-color="${p.c2}"/></linearGradient>
+    <linearGradient id="s1">${stops([[0,"#000",.4],[.2,"#000",0],[.42,"#fff",.1],[.62,"#000",0],[1,"#000",.36]])}</linearGradient>
+    <linearGradient id="s2" x2="0" y2="1">${stops([[0,"#fff",.08],[.3,"#000",0],[1,"#000",.2]])}</linearGradient>
+    ${TEX[p.tex]}${zip ? `<pattern id="z" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill-opacity=".55"/><rect y="2" width="4" height="2" fill="#fff" fill-opacity=".45"/></pattern>` : ""}</defs>
+  <g clip-path="url(#m)"><rect ${R} fill="url(#b)"/><rect ${R} fill="url(#t0)"/>${p.tex === "quilt" ? `<rect ${R} fill="url(#t1)"/>` : ""}
+    <rect ${R} fill="url(#s1)"/><rect ${R} fill="url(#s2)"/>${zip ? `<rect x="99" y="22" width="2" height="193.6" fill="url(#z)"/>` : ""}
+    ${g.details}${p.motif ? motif(p) : ""}</g></svg>`;
 }
 
 // digits left of k·length are locked to `text`, the rest roll
@@ -900,8 +1049,8 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }));
 io.observe(carEl);
 
-// chapter links: open chapters go to their story, the rest to the Atlas with that chapter selected
-const chHref = c => c.open ? `#/story/${c.id}` : "#/atlas";
+// chapter links: open chapters go to their story, previews to their preview, the rest to the Atlas with that chapter selected
+const chHref = c => c.open ? `#/story/${c.id}` : c.preview ? `#/chapter/${c.id}` : "#/atlas";
 const chStatus = c => `<span class="pill ${c.open ? "open" : ""}">${c.open ? "Open for requests" : "In preparation"}</span>`;
 $("#homeChapters").innerHTML = CHAPTERS.map(c => `<a class="ch-card" href="${chHref(c)}" data-ch="${c.id}">
   <span class="top"><span class="roman">${c.num}</span>${chStatus(c)}</span>
@@ -972,8 +1121,8 @@ for (const dl of [legalDlg, $("#reqDlg")]) dl.addEventListener("click", e => {  
 });
 
 /* ================= router ================= */
-// #/atlas, #/story/<id>, #/piece/<id> are views; any other hash is an anchor on the home page
-const views = {home: $("#top"), atlas: $("#atlasView"), story: $("#taleView"), piece: $("#pieceView")};
+// #/atlas, #/story/<id>, #/chapter/<id>, #/piece/<id> are views; any other hash is an anchor on the home page
+const views = {home: $("#top"), atlas: $("#atlasView"), story: $("#taleView"), teaser: $("#teaserView"), piece: $("#pieceView")};
 let view = null;
 function route(){
   const h = location.hash;
@@ -983,6 +1132,10 @@ function route(){
     place = CHAPTERS.find(c => c.open && h === "#/story/" + c.id);
     if (!place) { location.replace("#/atlas"); return; }
     v = "story"; label = `Chapter ${place.num} · ${place.title}`;
+  } else if (h.startsWith("#/chapter/")) {
+    place = CHAPTERS.find(c => c.preview && h === "#/chapter/" + c.id);
+    if (!place) { location.replace("#/atlas"); return; }
+    v = "teaser"; label = `Chapter ${place.num} · ${place.title}`;
   } else if (h.startsWith("#/piece/")) {
     piece = PIECES.find(x => h === "#/piece/" + x.id);
     if (!piece) { location.replace("#/story/skrei"); return; }
@@ -993,7 +1146,8 @@ function route(){
     if (piece) renderPiece(piece);
     for (const k in views) views[k].hidden = k !== v;
     view = v;
-    document.title = {home:"YVER", atlas:"The Atlas · YVER", story:`${place?.title} · YVER`, piece:`${piece?.name} · YVER`}[v];
+    document.title = {home:"YVER", atlas:"The Atlas · YVER", story:`${place?.title} · YVER`, teaser:`${place?.title} · YVER`, piece:`${piece?.name} · YVER`}[v];
+    placeTemple(v);
     if (v === "atlas" && pendingSelect) select(CHAPTERS.find(c => c.id === pendingSelect));
     pendingSelect = null;
     if (v !== "home") { if (changed) scrollTo({top:0, behavior:"instant"}); return; }
@@ -1103,7 +1257,7 @@ function showPinCard(c){
   card.innerHTML = `<button class="x" type="button" data-pc-close aria-label="Close preview">×</button>
     <span class="roman">${c.num}</span>
     <div><b>${c.title}</b><span class="cap muted">${c.place} · ${coord(c.lat, c.lon)}</span><span class="cap">${c.craft} · ${c.pieces} pieces · from ${eur(c.from)}</span></div>
-    ${c.open ? `<a class="btn" href="#/story/${c.id}">Enter chapter →</a>` : `<span class="pill">In preparation</span>`}`;
+    ${c.open ? `<a class="btn" href="#/story/${c.id}">Enter chapter →</a>` : c.preview ? `<a class="btn ghost" href="#/chapter/${c.id}">Preview the chapter →</a>` : `<span class="pill">In preparation</span>`}`;
   card.hidden = false;
   $("#mapHint").hidden = true;
 }
@@ -1129,7 +1283,8 @@ function renderChapters(){
       <span class="meta cap">${c.pieces} pieces · from ${eur(c.from)}</span>
     </button>
     ${c.id === selected && c.open ? `<a class="btn" href="#/story/${c.id}">Enter the chapter →</a>` : ""}
-    ${c.id === selected && !c.open ? `<span class="cap muted" style="align-self:flex-end">This chapter is in preparation.</span>` : ""}
+    ${c.id === selected && c.preview ? `<a class="btn ghost" href="#/chapter/${c.id}">Preview the chapter →</a>` : ""}
+    ${c.id === selected && !c.open && !c.preview ? `<span class="cap muted" style="align-self:flex-end">This chapter is in preparation.</span>` : ""}
   </li>`).join("");
 }
 $("#chapterList").addEventListener("click", e => {
@@ -1297,6 +1452,147 @@ function setPv(m){
 }
 document.querySelector(".pv-stage .seg").addEventListener("click", e => { if (e.target.dataset.pv) setPv(e.target.dataset.pv); });
 
+/* ================= pieces in orbit ================= */
+// orbit.js (and three.js) load only when the section scrolls near; if WebGL is missing the stage hides
+// and the grid below still has every piece
+const orbitEl = $("#orbit"), dock = $("#dock");
+let orbit = null, orbitVisible = false, orbitState = "idle";
+dock.innerHTML = PIECES.map((p, i) => `<button type="button" data-i="${i}" aria-pressed="false" aria-label="${p.name}" title="${p.name}">${jacket(p)}</button>`).join("");
+function orbitCard(i){
+  [...dock.children].forEach((b, k) => b.setAttribute("aria-pressed", k === i));
+  const card = $("#orbitCard");
+  if (i === null) { card.hidden = true; return; }
+  const p = PIECES[i];
+  card.innerHTML = `<span class="cat ${p.cat === "Archive" ? "hot" : ""}">${p.cat} · ${p.ed}</span>
+    <b>${p.name}</b>
+    <span class="price">${p.mat} · ${priceText(p)}</span>
+    <p>${p.line}</p>
+    <div class="car-ctas"><a class="btn" href="#/piece/${p.id}">View piece</a><button class="btn ghost" type="button" data-orbit-close>Back to the ring</button></div>`;
+  card.hidden = false;
+}
+function mountOrbit(){
+  orbitState = "loading";
+  import("./orbit.js")
+    .then(m => m.createOrbit({canvas: $("#orbitCanvas"), pieces: PIECES, svgFor: jacketSVG, calm,
+      onFocus: orbitCard, onOpen: i => location.hash = `#/piece/${PIECES[i].id}`}))
+    .then(o => { orbit = o; orbitState = "ready"; orbitEl.classList.add("ready"); o.frame(); })
+    .catch(err => { orbitState = "failed"; orbitEl.hidden = true; console.warn("Orbit unavailable:", err); });
+}
+new IntersectionObserver(([e]) => {
+  orbitVisible = e.isIntersecting;
+  if (orbitVisible && orbitState === "idle") mountOrbit();
+  orbit?.setVisible(orbitVisible);
+}, {rootMargin: "300px 0px"}).observe(orbitEl);
+dock.addEventListener("click", e => { const b = e.target.closest("button"); if (b && orbit) orbit.focus(+b.dataset.i); });
+// dock magnification: items swell toward the pointer, measured from their resting places around the dock's centre
+dock.addEventListener("pointermove", e => {
+  if (calm || e.pointerType !== "mouse") return;
+  const r = orbitEl.getBoundingClientRect(), x = e.clientX - (r.left + r.width / 2), w = dock.children[0].offsetWidth + 6;
+  [...dock.children].forEach((b, i) => {
+    const d = Math.abs(x - (i - (PIECES.length - 1) / 2) * w);
+    b.style.setProperty("--s", (1 + .45 * Math.max(0, 1 - d / (w * 2.2))).toFixed(3));
+  });
+});
+dock.addEventListener("pointerleave", () => [...dock.children].forEach(b => b.style.removeProperty("--s")));
+$("#orbitCard").addEventListener("click", e => { if (e.target.closest("[data-orbit-close]")) orbit?.focus(null); });
+addEventListener("keydown", e => { if (e.key === "Escape" && view === "story" && orbit?.focused != null) orbit.focus(null); });
+
+/* ================= Temple Night: home hero and chapter preview ================= */
+// ThreeUI's Temple Night scene (MIT, vendor/temple-night.js) sits behind the home carousel and behind the
+// chapter preview. There is one scene: its canvas moves into whichever of the two is showing.
+// Building its world takes seconds of JavaScript, so it runs in a worker (temple-worker.js) on an
+// OffscreenCanvas. Browsers without that build it on the page, but only once a preview is opened,
+// so the home page never freezes for it.
+let templeCanvas = $("#temple"), temple = null, templeWorker = null, templeState = "idle";
+const teaserEl = $("#teaser");
+const SCENE_HOSTS = {home: [carEl, $("#heroScene")], teaser: [teaserEl, $("#teaserScene")]};
+const sceneSeen = new Map();                         // section → on screen
+const sceneSection = () => SCENE_HOSTS[view]?.[0];
+const templeSize = () => ({w: Math.max(1, templeCanvas.clientWidth), h: Math.max(1, templeCanvas.clientHeight), dpr: devicePixelRatio || 1});
+const templeReady = () => { templeState = "ready"; templeCanvas.classList.add("ready"); templeRun(); };
+const templeFail = err => { templeState = "failed"; console.warn("Temple Night unavailable:", err); };
+const canWorker = () => !!templeCanvas.transferControlToOffscreen && typeof Worker !== "undefined";
+// called on every view change
+function placeTemple(v){
+  const host = SCENE_HOSTS[v]?.[1];
+  if (!host) return templeRun();
+  if (templeCanvas.parentElement !== host) host.append(templeCanvas);
+  if (templeState === "ready") { templeResize(); return templeRun(); }
+  if (templeState !== "idle") return;
+  if (canWorker()) startTempleWorker();
+  else if (v === "teaser") { templeState = "loading"; templeHere(); }
+}
+function startTempleWorker(){
+  templeState = "loading";
+  const off = templeCanvas.transferControlToOffscreen();
+  // the renderer's own options ride on the worker's URL; it's a backdrop, so draw it at 1× unless the page URL says otherwise
+  const opts = new URLSearchParams(location.search);
+  if (!opts.has("dpr")) opts.set("dpr", "1");
+  templeWorker = new Worker("./temple-worker.js?" + opts, {type: "module"});
+  templeWorker.onmessage = ({data: m}) => {
+    if (m.type === "ready") { templeResize(); templeReady(); }
+    if (m.type === "failed") templeFallback(m.error);
+  };
+  templeWorker.onerror = e => { e.preventDefault(); templeFallback(e.message); };
+  templeWorker.postMessage({type: "init", canvas: off, ...templeSize(), calm, touch: matchMedia("(hover: none)").matches}, [off]);
+}
+// the worker could not draw (no WebGL in workers, say): a transferred canvas can't be used again, so swap in a
+// fresh one, and build on the page only where that was allowed in the first place
+function templeFallback(err){
+  templeWorker?.terminate(); templeWorker = null;
+  const fresh = templeCanvas.cloneNode();
+  templeCanvas.replaceWith(fresh); templeCanvas = fresh;
+  console.info("Temple Night: no worker rendering here.", err);
+  templeState = "idle";
+  if (view === "teaser") { templeState = "loading"; templeHere(); }
+}
+function templeHere(){
+  import("./vendor/temple-night.js").then(m => {
+    temple = m.createTempleNightRenderer(templeCanvas);
+    if (!temple) throw new Error("WebGL unavailable");
+    templeResize(); templeReady();
+  }).catch(templeFail);
+}
+function templeResize(){
+  if (templeWorker) return templeWorker.postMessage({type: "size", ...templeSize()});
+  if (!temple) return;
+  templeCanvas.style.width = templeCanvas.style.height = "";   // three pins the css size; let the stylesheet size it again
+  temple.resize(); temple.render(performance.now());
+}
+// frame budget: the scene is decoration. Capped at 30 fps; if the page itself still drops under ~40 fps
+// while it runs, it steps down to 15 fps and then to a still frame, so scrolling and the carousel stay smooth
+let templeFps = 30, templeDrawn = -Infinity;
+const budget = [];
+function templeBudget(t, dt){
+  if (!templeOn() || !templeFps) { budget.length = 0; return; }
+  budget.push(dt);
+  if (budget.length < 90) return;
+  const median = budget.sort((a, b) => a - b)[45];
+  budget.length = 0;
+  if (median <= 25) return;
+  templeFps = templeFps > 15 ? 15 : 0;
+  templeWorker?.postMessage({type: "fps", fps: templeFps});
+  console.info(`Temple Night: page under budget (${Math.round(1000 / median)} fps), scene ${templeFps ? `at ${templeFps} fps` : "held still"}.`);
+}
+const templeOn = () => templeState === "ready" && !!sceneSection() && sceneSeen.get(sceneSection()) !== false && !document.hidden;
+// the worker animates on its own; tell it when the scene is on screen
+function templeRun(){ templeWorker?.postMessage({type: "run", on: templeOn()}); }
+for (const [section] of Object.values(SCENE_HOSTS)) {
+  section.addEventListener("pointermove", e => {
+    const r = templeCanvas.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 2 - 1, y = 1 - (e.clientY - r.top) / r.height * 2;
+    if (templeWorker) return templeWorker.postMessage({type: "pointer", x, y, inside: true});
+    if (!temple) return;
+    temple.setPointer(x, y, true);
+    if (temple.reducedMotion) temple.render(performance.now());
+  });
+  section.addEventListener("pointerleave", () => {
+    templeWorker ? templeWorker.postMessage({type: "pointer", x: 0, y: 0, inside: false}) : temple?.setPointer(0, 0, false);
+  });
+  new ResizeObserver(() => { if (section === sceneSection()) templeResize(); }).observe(section);
+  new IntersectionObserver(([e]) => { sceneSeen.set(section, e.isIntersecting); templeRun(); }).observe(section);
+}
+document.addEventListener("visibilitychange", templeRun);
+
 /* ================= request ================= */
 $("#reqPiece").innerHTML = PIECES.map(p => `<option value="${p.id}">${p.name} — ${p.price ? eur(p.price) : "price on request"}</option>`).join("");
 $("#reqSize").innerHTML = [...SIZES, "Made to measure"].map(s => `<option>${s}</option>`).join("");
@@ -1375,8 +1671,12 @@ let lastT = performance.now();
 (function frame(t){
   const dt = Math.min(50, t - lastT); lastT = t;
   if (view === "atlas") drawAtlas(t);
-  else if (view === "story") drawSea(t, dt);
+  else if (view === "story") { drawSea(t, dt); if (orbit && orbitVisible) orbit.frame(t); }
   else if (view === "home" && carVisible) layoutCar(t);
+  templeBudget(t, dt);
+  if (temple && !temple.reducedMotion && templeOn() && templeFps && t - templeDrawn >= 1000 / templeFps - 4) {   // page-built scene (no worker)
+    templeDrawn = t; temple.render(t);
+  }
   requestAnimationFrame(frame);
 })(lastT);
 route();
